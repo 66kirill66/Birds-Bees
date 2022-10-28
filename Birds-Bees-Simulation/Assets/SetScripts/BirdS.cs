@@ -6,6 +6,8 @@ public class BirdS : MonoBehaviour
 {
     [DllImport("__Internal")]
     public static extern void BirdMeetFruit(int birdId, int fruitId);
+    [DllImport("__Internal")]
+    public static extern void SetBirdEnergyWeb(int birdId, int value);
 
     [SerializeField] GameObject birdPrifab;
     [SerializeField] GameObject birdPrifabTo;
@@ -15,9 +17,11 @@ public class BirdS : MonoBehaviour
     public bool isCheck;
     [SerializeField] int birdCheck;
     public float timerToFindFruit = 5;
-    bool find;
+    bool findFruit;
     GameObject bird;
     int num;
+
+    bool find;
 
     public class BirdData
     {
@@ -59,10 +63,17 @@ public class BirdS : MonoBehaviour
                     find = true;
                 }
                 if (bird != null)
-                {
+                {                    
                     bird.GetComponent<FlyMoovment>().BirdMoveToFruit();
                 }
             }
+        }     
+    }
+    public void SetBirdEnergySendToWeb(int birdId, int value)
+    {
+        if (!Application.isEditor)
+        {
+            SetBirdEnergyWeb(birdId, value);
         }
     }
     public void DeliteBird(int birdId)
@@ -93,26 +104,11 @@ public class BirdS : MonoBehaviour
         {
             if (i.GetComponent<DataScript>().id == birdId)
             {
-                i.GetComponent<SliderPosition>().slider.value += sliderVal;
+                i.GetComponent<BirdSliderPosition>().slider.value = sliderVal;
                 break;
             }
         }
-    }
-
-    public void ResetBirdSimulation()
-    {
-        if (birdsList.Count != 0)
-        {
-            foreach (GameObject i in birdsList)
-            {
-                Destroy(i);
-            }
-        }
-        birdsList.Clear();
-        birdsNum = 0;
-        timerToFindFruit = 15;
-        find = false;
-    }
+    }  
     public void BirdMeetFruitrWeb(int birdId, int fruitId)
     {
         if (!Application.isEditor)
@@ -120,7 +116,6 @@ public class BirdS : MonoBehaviour
             BirdMeetFruit(birdId, fruitId);
         }
     }
-
     private Vector3 RundomPointToInst()
     {
 
@@ -137,8 +132,6 @@ public class BirdS : MonoBehaviour
     }
     public void InstantiateBird(int id)
     {
-        //RundomPointToInst();
-        //Vector3 createPos = new Vector3(PosX, PosY, PosZ);
         int birdNum = GetNumberToInstRundomBird();
         if (birdNum > 3)
         {
@@ -154,5 +147,19 @@ public class BirdS : MonoBehaviour
             birdsList.Add(birdP);
             birdsNum++;
         }
+    }
+    public void ResetBirdSimulation()
+    {
+        if (birdsList.Count != 0)
+        {
+            foreach (GameObject i in birdsList)
+            {
+                Destroy(i);
+            }
+        }
+        birdsList.Clear();
+        birdsNum = 0;
+        timerToFindFruit = 5;
+        findFruit = false;
     }
 }

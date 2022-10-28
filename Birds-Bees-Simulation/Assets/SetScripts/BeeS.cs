@@ -21,7 +21,9 @@ public class BeeS : MonoBehaviour
     bool find;
     [SerializeField] int beesCheck;
     GameObject bee;
-    int num;
+    int rundomBeeNum;
+
+    // DataClasss
     public class BeeMData
     {
         public int sliderNewValue;
@@ -33,7 +35,6 @@ public class BeeS : MonoBehaviour
             return beeMDataData;
         }
     }
-
 
     void Start()
     {
@@ -50,7 +51,12 @@ public class BeeS : MonoBehaviour
     }
     private void Update()
     {
-        if(beeList.Count != 0)
+        TimerToFindFlower();
+    }
+
+    private void TimerToFindFlower()
+    {
+        if (beeList.Count != 0)
         {
             if (timerToFindFlower >= 0)
             {
@@ -69,8 +75,9 @@ public class BeeS : MonoBehaviour
                     bee.GetComponent<FlyMoovment>().BeeMoveToFlower();
                 }
             }
-        }       
+        }
     }
+
     public void OnStateUpdate(string jsonData)
     {
         BeeMData data = BeeMData.CreateFromJSON(jsonData);
@@ -85,7 +92,7 @@ public class BeeS : MonoBehaviour
                     i.GetComponent<DataScript>().beeState = state;
                     if(state == "hibernate")
                     {
-                        i.GetComponent<SliderPosition>().sliderDown = false;
+                        i.GetComponent<BeeSliderPosition>().sliderDown = false;
                         beeList.Remove(i);
                         beeInHaiveList.Add(i);
                         // Check if Bee active / hibernate after Update state
@@ -104,7 +111,7 @@ public class BeeS : MonoBehaviour
                     i.GetComponent<DataScript>().beeState = state;
                     if (state == "active")
                     {
-                        i.GetComponent<SliderPosition>().sliderDown = true;
+                        i.GetComponent<BeeSliderPosition>().sliderDown = true;
                         beeInHaiveList.Remove(i);
                         beeList.Add(i);
                         // Check if Bee active / hibernate after Update state
@@ -138,27 +145,58 @@ public class BeeS : MonoBehaviour
                 break;
             }
         }
-    }
-
-    private GameObject GetRundomBee()
-    {
-        int max = beeList.Count;
-        num = Random.Range(0, max);
-        return beeList[num];
-    }
-    public void SetBeeEnergySendToWeb(int beeId,int value)
-    {
-        if (!Application.isEditor)
-        {
-            SetBeeEnergyWeb(beeId, value);
-        }          
-    }
+    } 
     public void BeeMeetFlowerWeb(int beeId, int flowerId)
     {
         if (!Application.isEditor)
         {
             BeeMeetFlower(beeId, flowerId);
         }
+    }
+   
+    public void SetBeeEnergySendToWeb(int beeId, int value)
+    {
+        if (!Application.isEditor)
+        {
+            SetBeeEnergyWeb(beeId, value);
+        }
+    }
+
+    public void SetBeeSliderValue(string jsonData)
+    {
+        BeeMData data = BeeMData.CreateFromJSON(jsonData);
+        int sliderVal = data.sliderNewValue;
+        int beesId = data.beeId;
+        foreach (GameObject i in beeList)
+        {
+            if (i.GetComponent<DataScript>().id == beesId)
+            {
+                i.GetComponent<BeeSliderPosition>().slider.value = sliderVal;              
+                break;
+            }
+        }
+    }
+    private GameObject GetRundomBee()
+    {
+        int max = beeList.Count;
+        rundomBeeNum = Random.Range(0, max);
+        return beeList[rundomBeeNum];
+    }
+    private Vector3 RundomPointToInst()
+    {
+
+        PosX = Random.Range(120, 200);
+        PosY = Random.Range(14, 30);
+        PosZ = 150;
+        Vector3 createPos = new Vector3(PosX, PosY, PosZ);
+        return createPos;
+    }
+    public void InstantiateBee(int id)
+    {       
+        GameObject beeP = Instantiate(beePrifab, RundomPointToInst(), beePrifab.transform.rotation);
+        beeP.AddComponent<DataScript>().id = id;
+        beeList.Add(beeP);
+        beesNum++;
     }
     public void ResetBeeMSimulation()
     {
@@ -170,46 +208,14 @@ public class BeeS : MonoBehaviour
             }
         }
         beeList.Clear();
-        beesNum = 0;
-
-        FindObjectOfType<MonthChanager>().SetPanelToOriginal();
-    }
-
-   
-    public void SetBeeSliderValue(string jsonData)
-    {
-        BeeMData data = BeeMData.CreateFromJSON(jsonData);
-        int sliderVal = data.sliderNewValue;
-        int beesId = data.beeId;
-        foreach (GameObject i in beeList)
+        if (beeInHaiveList.Count != 0)
         {
-            if (i.GetComponent<DataScript>().id == beesId)
+            foreach (GameObject i in beeInHaiveList)
             {
-                i.GetComponent<SliderPosition>().slider.value += sliderVal;
-                int currentVal = Mathf.RoundToInt(i.GetComponent<SliderPosition>().slider.value);;
-                SetBeeEnergySendToWeb(beesId, currentVal);
-                break;
+                Destroy(i);
             }
         }
-    }
-
-
-    private Vector3 RundomPointToInst()
-    {
-
-        PosX = Random.Range(120, 200);
-        PosY = Random.Range(14, 30);
-        PosZ = 150;
-        Vector3 createPos = new Vector3(PosX, PosY, PosZ);
-        return createPos;
-    }
-
-
-    public void InstantiateBee(int id)
-    {       
-        GameObject beeP = Instantiate(beePrifab, RundomPointToInst(), beePrifab.transform.rotation);
-        beeP.AddComponent<DataScript>().id = id;
-        beeList.Add(beeP);
-        beesNum++;
+        beeInHaiveList.Clear();       
+        beesNum = 0;
     }
 }

@@ -2,6 +2,7 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - BeeS
+    - BeeSliderPosition
     - BirdS
     - BirdSliderPosition
     - DataScript
@@ -14,7 +15,6 @@ ScriptsOnlyBuild:
     - LightDay
     - MonthChanager
     - PlantPlace
-    - SliderPosition
     - TemperatureS
     - UnityStandardAssets.Water.WaterBasic
     Unity.Rider.Editor.dll:
@@ -156,9 +156,9 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 14138}
     - Class: 114
-      Script: {instanceID: 19160}
+      Script: {instanceID: 83794}
     - Class: 114
-      Script: {instanceID: 20456}
+      Script: {instanceID: 85042}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -380,7 +380,7 @@ ScriptsOnlyBuild:
     className: TransitionArmModel
   - hash:
       serializedVersion: 2
-      Hash: b787d835e15894d5e13fdea9bad3ec73
+      Hash: 9f4b8ff129914e7b881a34b417f030c3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FlyMoovment
@@ -536,7 +536,7 @@ ScriptsOnlyBuild:
     className: RemoteTestResultSender
   - hash:
       serializedVersion: 2
-      Hash: 1fa92390f6567fd32136bda68f6dffb4
+      Hash: 935c0bf512b1aee9d3eb3a84b95499af
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MonthChanager
@@ -572,10 +572,10 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: b2d3009f3e45b04cf3ddba9073c0e0f8
+      Hash: cd6b6d65b7d91870aa710172c73d2c12
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: SliderPosition
+    className: BeeSliderPosition
   - hash:
       serializedVersion: 2
       Hash: e244702e0dc05782229aa524e4d757f5

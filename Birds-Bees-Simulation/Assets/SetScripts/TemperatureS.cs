@@ -15,7 +15,8 @@ public class TemperatureS : MonoBehaviour
     private void Awake()
     {      
         tempCanvas.SetActive(false);
-    }
+        haveTemp = false;
+}
     private void Start()
     {
         if(tempCheck == true)
@@ -23,22 +24,6 @@ public class TemperatureS : MonoBehaviour
             SetTempCanavas();
         }      
     }
-    public void SetTempCanavas()
-    {
-        haveTemp = true;
-        tempCanvas.SetActive(true);
-        if (FindObjectOfType<LightDay>().havelight == false)
-        {
-            FindObjectOfType<MonthChanager>().TempCanvas();
-        }
-    }
-    public void ResetTempSimulation()
-    {           
-        FindObjectOfType<MonthChanager>().SetPanelToOriginal();
-        tempCanvas.SetActive(false);
-        haveTemp = false;
-    }
-
     public void SetTemperatureVal(int value)
     {
         if (!Application.isEditor)
@@ -49,6 +34,18 @@ public class TemperatureS : MonoBehaviour
     public void CreateTemp(int id)
     {
         this.id = id;
-        SetTempCanavas();
+        SetTempCanavas();    
+    }
+    public void SetTempCanavas()
+    {
+        haveTemp = true;
+        tempCanvas.SetActive(true);
+        FindObjectOfType<MonthChanager>().TempCanvas();
+    }
+    public void ResetTempSimulation()
+    {
+        FindObjectOfType<MonthChanager>().SetPanelToOriginal();
+        tempCanvas.SetActive(false);
+        haveTemp = false;
     }
 }

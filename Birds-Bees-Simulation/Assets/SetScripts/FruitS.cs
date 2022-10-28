@@ -52,18 +52,13 @@ public class FruitS : MonoBehaviour
         }          
     }
     public void ResetFruitSimulation()
-    {
-        //var plaseF = FindObjectsOfType<PlantPlace>();
-        //foreach (PlantPlace i in plaseF)
-        //{
-        //    i.isFree = true;
-        //}
-        //foreach (GameObject i in fruitList)
-        //{
-        //    Destroy(i);
-        //}
-        //fruitList.Clear();
-        //fruitsNum = 0;
+    {        
+        foreach (GameObject i in fruitList)
+        {
+            Destroy(i);
+        }
+        fruitList.Clear();
+        fruitsNum = 0;
     }
 
     
@@ -85,7 +80,6 @@ public class FruitS : MonoBehaviour
             }
         }
     }
-
     public void BirdEatFruit(int fruitId) 
     {
         if(fruitList.Count != 0)
@@ -105,8 +99,6 @@ public class FruitS : MonoBehaviour
             }
         }       
     }
-
-
     public void CreateNewFruit(int flowerId)   // send receptor Id 
     {
         if (!Application.isEditor)

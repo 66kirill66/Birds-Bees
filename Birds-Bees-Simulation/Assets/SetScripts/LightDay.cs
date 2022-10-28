@@ -17,6 +17,7 @@ public class LightDay : MonoBehaviour
     {
         lightCanvasLest.SetActive(false);
         lightCanvasSecond.SetActive(false);
+        havelight = false;
     }
     private void Start()
     {
@@ -25,21 +26,7 @@ public class LightDay : MonoBehaviour
             Invoke("SetLightCanavas", 0.2f);
         }
     }
-    public void SetLightCanavas()
-    {
-        havelight = true;
-        if (FindObjectOfType<TemperatureS>().haveTemp == false)
-        {
-            lightCanvasSecond.SetActive(true);
-            FindObjectOfType<MonthChanager>().TempCanvas();
-        }
-        if (FindObjectOfType<TemperatureS>().haveTemp == true)
-        {
-            lightCanvasLest.SetActive(true);
-            FindObjectOfType<MonthChanager>().LightCanvas();
-        }
-
-    }
+    
     public void LightValueSet(int value)
     {
         if (!Application.isEditor)
@@ -47,18 +34,30 @@ public class LightDay : MonoBehaviour
             LightValueSetWeb(id, value);
         }
     }
-    //public void ResetLightSimulation()
-    //{
-    //    lightCanvasLest.SetActive(false);
-    //    lightCanvasSecond.SetActive(false);
-    //    havelight = false;
-    //    FindObjectOfType<MonthChanager>().SetPanelToOriginal();
-    //}
-
-
+    public void ResetLightSimulation()
+    {
+        lightCanvasLest.SetActive(false);
+        lightCanvasSecond.SetActive(false);
+        havelight = false;
+        FindObjectOfType<MonthChanager>().SetPanelToOriginal();
+    }
     public void CreateLight(int lightId)
     {
         id = lightId;
-        Invoke("SetLightCanavas", 0.2f);
+        Invoke("SetLightCanavas", 0.1f);
+    }
+    public void SetLightCanavas()
+    {
+        havelight = true;
+        if (FindObjectOfType<TemperatureS>().haveTemp == true)
+        {
+            lightCanvasLest.SetActive(true);
+            FindObjectOfType<MonthChanager>().LightCanvas();
+        }
+        if (FindObjectOfType<TemperatureS>().haveTemp == false)
+        {
+            lightCanvasSecond.SetActive(true);
+            FindObjectOfType<MonthChanager>().TempCanvas();
+        }       
     }
 }

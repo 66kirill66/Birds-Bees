@@ -18,7 +18,7 @@ public class InternalFunc : MonoBehaviour
     [SerializeField] Camera mainCamera;
     void Start()
     {
-
+        Time.timeScale = 1;
         if (!Application.isEditor)
         {
             if (reset == false)
@@ -72,10 +72,26 @@ public class InternalFunc : MonoBehaviour
             Time.timeScale = 1;
         }
     }
+    //public void ResetSimulation()
+    //{
+    //    Time.timeScale = 0;
+    //    reset = true;
+    //    SceneManager.LoadScene(0);
+    //}
     public void ResetSimulation()
     {
-        reset = true;
-        SceneManager.LoadScene(0);
+        Time.timeScale = 0;
+        var plaseF = FindObjectsOfType<PlantPlace>();
+        foreach (PlantPlace i in plaseF)
+        {
+            i.isFree = true;
+        }
+        GetComponent<BeeS>().ResetBeeMSimulation();
+        GetComponent<BirdS>().ResetBirdSimulation();
+        GetComponent<TemperatureS>().ResetTempSimulation();
+        GetComponent<LightDay>().ResetLightSimulation();
+        GetComponent<FlowerS>().ResetFlowerSimulation();
+        GetComponent<FruitS>().ResetFruitSimulation();       
     }
 
     public void SetLanguage(string lang)

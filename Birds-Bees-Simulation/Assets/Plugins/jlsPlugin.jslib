@@ -59,22 +59,11 @@ mergeInto(LibraryManager.library,
     globals.SetBeeEnergy(beeId,value);
   },
 
-  
-
-  
-
-  
-
-  
-
-  
-
- 
-
- 
-
-
-  
+  //
+  SetBirdEnergyWeb: function(birdId,value)
+  {
+    globals.SetBirdEnergy(birdId,value);
+  },
 
 
   

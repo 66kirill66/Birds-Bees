@@ -22,6 +22,7 @@ public class FlyMoovment : MonoBehaviour
     int fruitId;
     bool isHaive;
     Animator anim;
+    [SerializeField] GameObject beeParticle;
 
     void Start()
     {
@@ -61,30 +62,11 @@ public class FlyMoovment : MonoBehaviour
             StartCoroutine(FlyRange());
         }
     }
-    public void BirdMoveToFruit()
-    {
-        if (fly == true)
-        {
-            fly = false;
-            StopAllCoroutines();
-            FindFruitPosition();
-        }
-        if (fruitPrifab != null)
-        {
-            MoveToFruit(endPos);
-        }
-        else
-        {
-            FindObjectOfType<BirdS>().timerToFindFruit = 5;
-            fly = true;
-            StartCoroutine(FlyRange());
-        }
-    }
+   
     
     public void BeeGoToHive()
     {
         fly = false;
-
         isHaive = true;
         StartCoroutine(HivePlacee());
     }
@@ -172,19 +154,42 @@ public class FlyMoovment : MonoBehaviour
     private void MoveToFlower(Vector3 endPos)
     {
         Vector3 startPos = transform.position;
-        transform.position = Vector3.Lerp(startPos, endPos, 0.5f * Time.deltaTime);
+        transform.position = Vector3.Lerp(startPos, endPos, 0.5f * Time.deltaTime);       
+        if (ReturnDist() < 3f && fly == false)
+        {
+            beeParticle.SetActive(true);                                 
+        }
         if (ReturnDist() < 1f && fly == false)
         {
-            //FindObjectOfType<FlowerS>().SetFlowersLevelSend(flowerDelCheck);
-            // GetComponent<SliderPosition>().slider.value += 100;
-            flowerPrifab.GetComponent<FlowerScript>().haveBee = false;
-            flowerPrifab = null;           
-            FindObjectOfType<BeeS>().timerToFindFlower = 5;
             FindObjectOfType<BeeS>().BeeMeetFlowerWeb(beeId, flowerId);  // web
+            flowerPrifab.GetComponent<FlowerScript>().haveBee = false;
+            flowerPrifab = null;
             fly = true;
-            StartCoroutine(FlyRange());           
+            StartCoroutine(FlyRange());
+            FindObjectOfType<BeeS>().timerToFindFlower = 5;
+            beeParticle.SetActive(false);
         }
+
     }
+    public void BirdMoveToFruit()   // work on Update
+    {
+        if (fly == true)
+        {
+            fly = false;
+            StopAllCoroutines();
+            FindFruitPosition();
+        }
+        if (fruitPrifab != null)
+        {
+            MoveToFruit(endPos);
+        }
+        else
+        {
+            FindObjectOfType<BirdS>().timerToFindFruit = 5;
+            fly = true;
+            StartCoroutine(FlyRange());
+        }
+    } 
     private void FindFruitPosition()
     {
         if (FindObjectOfType<FruitS>().fruitList.Count != 0)
@@ -196,7 +201,7 @@ public class FlyMoovment : MonoBehaviour
                     fruitId = i.GetComponent<DataScript>().id;
                     i.GetComponent<FruitLogick>().haveBird = true;                  
                     fruitPrifab = i;
-                    endPos = i.transform.position;
+                    endPos = i.transform.position;  // Fruit Place
                     break;
                 }               
             }
@@ -208,11 +213,10 @@ public class FlyMoovment : MonoBehaviour
         transform.position = Vector3.Lerp(startPos, endPos, 0.5f * Time.deltaTime);
         if (ReturnDist() < 1 && fly == false)
         {
-            // GetComponent<SliderPosition>().slider.value += 100;
             fruitPrifab.GetComponent<FruitLogick>().haveBird = false;
             fruitPrifab = null;
             FindObjectOfType<BirdS>().timerToFindFruit = 5;
-            FindObjectOfType<BirdS>().BirdMeetFruitrWeb(birdId, fruitId); /////
+            FindObjectOfType<BirdS>().BirdMeetFruitrWeb(birdId, fruitId);
             fly = true;
             StartCoroutine(FlyRange());
         }

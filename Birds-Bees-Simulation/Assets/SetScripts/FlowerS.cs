@@ -26,9 +26,7 @@ public class FlowerS : MonoBehaviour
                 id++;
             }
         }
-
-    }
-    
+    }   
     public void SetFlowersLevelSend(GameObject flowerPrifab)
     {
         int flowerId = flowerPrifab.GetComponent<DataScript>().id;
@@ -40,31 +38,18 @@ public class FlowerS : MonoBehaviour
            SetFlowersLevelWeb(flowerId);
         }           
     }
-   
-
     public void ChangeFlowerTofruit(int flowerId)
     {
         FindObjectOfType<FruitS>().CreateNewFruit(flowerId);
     }
     public void ResetFlowerSimulation()
-    {
-        //var plaseF = FindObjectsOfType<PlantPlace>();
-        //foreach (PlantPlace i in plaseF)
-        //{
-        //    i.isFree = true;
-        //}
-
-        //foreach (GameObject i in flowerList)
-        //{
-        //    Destroy(i);
-        //}
-        //flowerList.Clear();
-        //flowersNum = 0;
-        //foreach(GameObject i in flowerListToDelite)
-        //{
-        //    Destroy(i);
-        //}
-        //flowerListToDelite.Clear();
+    {       
+        foreach (GameObject i in flowerList)
+        {
+            Destroy(i);
+        }
+        flowerList.Clear();
+        flowersNum = 0;        
     }
 
     public void DestroyFlower(int flowerId)
@@ -85,8 +70,7 @@ public class FlowerS : MonoBehaviour
             }
         }
     }
-
-        private void FindFlowerPosition()
+    private void FindFlowerPosition()
     {
         var plaseF = FindObjectsOfType<PlantPlace>();
         foreach (PlantPlace i in plaseF)
@@ -103,8 +87,6 @@ public class FlowerS : MonoBehaviour
             }
         }       
     }
-
-
     public void InstantiateFlower(int id)
     {
         FindFlowerPosition();
@@ -123,9 +105,7 @@ public class FlowerS : MonoBehaviour
             GameObject pl = flowerDel.GetComponent<FlowerScript>().plant;            
             int flowerId = flowerDel.GetComponent<DataScript>().id;
             Destroy(flowerDel);
-            flowerList.Remove(flowerDel);
-
-           
+            flowerList.Remove(flowerDel);          
             if (!Application.isEditor)
             {
                 //send to Plethora Delite flower.

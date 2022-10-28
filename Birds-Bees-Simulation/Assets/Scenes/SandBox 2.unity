@@ -2911,8 +2911,6 @@ MonoBehaviour:
   sky4: {fileID: 2100000, guid: d4454f71d85928744be7771e2143dab7, type: 2}
   snow: {fileID: 1576788734}
   gras: {fileID: 169469032}
-  panel: {fileID: 2043351568}
-  panelScale: {x: 0, y: 0, z: 0}
   readPanel: {fileID: 1923834944}
   monthPosition:
   - {fileID: 587730650}
@@ -12587,7 +12585,7 @@ MonoBehaviour:
     type: 3}
   birdsList: []
   isCheck: 0
-  birdCheck: 6
+  birdCheck: 3
   timerToFindFruit: 5
 --- !u!114 &1918636680
 MonoBehaviour:
@@ -12620,7 +12618,7 @@ MonoBehaviour:
   beeList: []
   beeInHaiveList: []
   isCheck: 0
-  beesCheck: 5
+  beesCheck: 1
 --- !u!114 &1918636682
 MonoBehaviour:
   m_ObjectHideFlags: 0
