@@ -34,13 +34,7 @@ public class LightDay : MonoBehaviour
             LightValueSetWeb(id, value);
         }
     }
-    public void ResetLightSimulation()
-    {
-        lightCanvasLest.SetActive(false);
-        lightCanvasSecond.SetActive(false);
-        havelight = false;
-        FindObjectOfType<MonthChanager>().SetPanelToOriginal();
-    }
+   
     public void CreateLight(int lightId)
     {
         id = lightId;
@@ -59,5 +53,12 @@ public class LightDay : MonoBehaviour
             lightCanvasSecond.SetActive(true);
             FindObjectOfType<MonthChanager>().TempCanvas();
         }       
+    }
+    public void ResetLightSimulation()
+    {
+        lightCanvasLest.SetActive(false);
+        lightCanvasSecond.SetActive(false);
+        havelight = false;
+        FindObjectOfType<MonthChanager>().SetPanelToOriginal();
     }
 }

@@ -37,15 +37,15 @@ public class TemperatureS : MonoBehaviour
         SetTempCanavas();    
     }
     public void SetTempCanavas()
-    {
-        haveTemp = true;
+    {       
         tempCanvas.SetActive(true);
         FindObjectOfType<MonthChanager>().TempCanvas();
+        haveTemp = true;
     }
     public void ResetTempSimulation()
-    {
-        FindObjectOfType<MonthChanager>().SetPanelToOriginal();
+    {       
         tempCanvas.SetActive(false);
         haveTemp = false;
+        FindObjectOfType<MonthChanager>().SetPanelToOriginal();
     }
 }

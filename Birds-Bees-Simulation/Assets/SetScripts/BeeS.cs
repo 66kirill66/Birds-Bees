@@ -18,7 +18,6 @@ public class BeeS : MonoBehaviour
     float PosX, PosY, PosZ;
     int beesNum;
     public bool isCheck;
-    bool find;
     [SerializeField] int beesCheck;
     GameObject bee;
     int rundomBeeNum;
@@ -60,20 +59,17 @@ public class BeeS : MonoBehaviour
         {
             if (timerToFindFlower >= 0)
             {
-                find = false;
                 timerToFindFlower -= Time.deltaTime;
             }
             else if (timerToFindFlower <= 0)
             {
-                if (find == false)
-                {
-                    bee = GetRundomBee();
-                    find = true;
-                }
+                bee = GetRundomBee();
                 if (bee != null)
                 {
                     bee.GetComponent<FlyMoovment>().BeeMoveToFlower();
+                    bee = null;
                 }
+                timerToFindFlower = 5;
             }
         }
     }
@@ -217,5 +213,6 @@ public class BeeS : MonoBehaviour
         }
         beeInHaiveList.Clear();       
         beesNum = 0;
+        timerToFindFlower = 5;
     }
 }

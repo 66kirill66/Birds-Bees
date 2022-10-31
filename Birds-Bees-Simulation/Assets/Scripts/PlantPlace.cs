@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlantPlace : MonoBehaviour
 {
     public bool isFree;
-    public int placeId;
+    //public int placeId;
     void Start()
     {
 

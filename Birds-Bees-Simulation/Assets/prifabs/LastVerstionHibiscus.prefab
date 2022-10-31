@@ -1607,6 +1607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  beeState: 
 --- !u!1 &4803352409299705401
 GameObject:
   m_ObjectHideFlags: 0

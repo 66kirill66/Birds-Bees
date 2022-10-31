@@ -52,20 +52,16 @@ public class BirdS : MonoBehaviour
         {
             if (timerToFindFruit >= 0)
             {
-                find = false;
                 timerToFindFruit -= Time.deltaTime;
             }
             else if (timerToFindFruit <= 0)
             {
-                if (find == false)
-                {
-                    bird = GetRundomBird();
-                    find = true;
-                }
+                bird = GetRundomBird();
                 if (bird != null)
                 {                    
                     bird.GetComponent<FlyMoovment>().BirdMoveToFruit();
                 }
+                timerToFindFruit = 5;
             }
         }     
     }

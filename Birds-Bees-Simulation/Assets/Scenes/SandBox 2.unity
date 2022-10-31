@@ -12600,6 +12600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1266199575}
+  FreePlantPlace: []
 --- !u!114 &1918636681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12618,7 +12619,7 @@ MonoBehaviour:
   beeList: []
   beeInHaiveList: []
   isCheck: 0
-  beesCheck: 1
+  beesCheck: 2
 --- !u!114 &1918636682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12636,7 +12637,7 @@ MonoBehaviour:
   flowerPrifab: {fileID: 4652403918176721289, guid: 53be7a0a3719dbd488b0cd16df9af589,
     type: 3}
   isCheck: 0
-  flowersCheck: 5
+  flowersCheck: 9
 --- !u!114 &1918636683
 MonoBehaviour:
   m_ObjectHideFlags: 0

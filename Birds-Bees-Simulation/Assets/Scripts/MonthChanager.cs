@@ -58,9 +58,22 @@ public class MonthChanager : MonoBehaviour
             i.SetActive(false);
         }
         month = 3;
+        currentMonth = month;
         monthPosition[month].gameObject.SetActive(true);
         //SetTemp To Original
-        if (GetComponent<TemperatureS>().haveTemp == true)
+        //if (GetComponent<TemperatureS>().haveTemp == true)
+        //{
+        //    tempObjects[3].GetComponentInChildren<Text>().text = 15.ToString();
+        //    tempObjects[4].GetComponentInChildren<Text>().text = 25.ToString();
+        //    tempObjects[5].GetComponentInChildren<Text>().text = 23.ToString();
+        //    tempObjects[6].GetComponentInChildren<Text>().text = 23.ToString();
+        //    tempObjects[7].GetComponentInChildren<Text>().text = 20.ToString();
+        //    tempObjects[8].GetComponentInChildren<Text>().text = 15.ToString();
+        //    tempObjects[9].GetComponentInChildren<Text>().text = 6.ToString();
+        //    tempObjects[10].GetComponentInChildren<Text>().text = 3.ToString();
+        //    tempObjects[11].GetComponentInChildren<Text>().text = 3.ToString();
+        //}
+        if(tempObjects.Count != 0)
         {
             tempObjects[3].GetComponentInChildren<Text>().text = 15.ToString();
             tempObjects[4].GetComponentInChildren<Text>().text = 25.ToString();

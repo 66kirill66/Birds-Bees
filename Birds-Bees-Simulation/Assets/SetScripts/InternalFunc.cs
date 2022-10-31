@@ -16,6 +16,12 @@ public class InternalFunc : MonoBehaviour
     public static bool reset;
     RaycastHit hit;
     [SerializeField] Camera mainCamera;
+    public List<GameObject> FreePlantPlace = new List<GameObject>();
+
+    public void Awake()
+    {
+        PlantPlaceListFinder();
+    }
     void Start()
     {
         Time.timeScale = 1;
@@ -26,6 +32,17 @@ public class InternalFunc : MonoBehaviour
                 callTNITfunction();
             }
         }
+    }
+    private void PlantPlaceListFinder()
+    {
+        var plaseF = FindObjectsOfType<PlantPlace>();
+        foreach (PlantPlace i in plaseF)
+        {
+            if (i.isFree == true)
+            {
+                FreePlantPlace.Add(i.gameObject);
+            }
+        }        
     }
     public void InitFunc()
     {
@@ -86,12 +103,14 @@ public class InternalFunc : MonoBehaviour
         {
             i.isFree = true;
         }
+        FreePlantPlace.Clear();
         GetComponent<BeeS>().ResetBeeMSimulation();
         GetComponent<BirdS>().ResetBirdSimulation();
         GetComponent<TemperatureS>().ResetTempSimulation();
         GetComponent<LightDay>().ResetLightSimulation();
         GetComponent<FlowerS>().ResetFlowerSimulation();
-        GetComponent<FruitS>().ResetFruitSimulation();       
+        GetComponent<FruitS>().ResetFruitSimulation();
+        PlantPlaceListFinder();
     }
 
     public void SetLanguage(string lang)
