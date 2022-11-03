@@ -7,7 +7,6 @@ public class BirdSliderPosition : MonoBehaviour
     [SerializeField] float offset;
     int birdId;
 
-    bool sliderDown;
     float totalTime;
 
     private void Start()

@@ -11,16 +11,17 @@ public class BeeS : MonoBehaviour
     [DllImport("__Internal")]
     public static extern void SetBeeEnergyWeb(int beeId, int value);
 
-    public float timerToFindFlower = 5;
     [SerializeField] GameObject beePrifab;
     public List<GameObject> beeList = new List<GameObject>();
+    public List<GameObject> beeFlowerList = new List<GameObject>();
     public List<GameObject> beeInHaiveList = new List<GameObject>();
     float PosX, PosY, PosZ;
     int beesNum;
     public bool isCheck;
     [SerializeField] int beesCheck;
     GameObject bee;
-    int rundomBeeNum;
+    public GameObject beeDestroyEf;
+    public float timerToFindFlower = 5;
 
     // DataClasss
     public class BeeMData
@@ -63,17 +64,39 @@ public class BeeS : MonoBehaviour
             }
             else if (timerToFindFlower <= 0)
             {
-                bee = GetRundomBee();
-                if (bee != null)
+                if(FindObjectOfType<FlowerS>().flowerList.Count != 0)
                 {
-                    bee.GetComponent<FlyMoovment>().BeeMoveToFlower();
-                    bee = null;
+                    bee = GetRundomBee();
+                    if (bee != null)
+                    {
+                        bee.GetComponent<BeeLogick>().BeeMoveToFlower();
+                        bee = null;
+                    }                   
                 }
                 timerToFindFlower = 5;
             }
         }
     }
 
+    public void OnPollinates(int id)
+    {
+        foreach(GameObject i in beeFlowerList)
+        {
+            if(i.GetComponent<DataScript>().id == id)
+            {
+                i.GetComponent<BeeLogick>().beeParticle.Play();
+                break;
+            }
+        }
+        foreach (GameObject i in beeList)
+        {
+            if (i.GetComponent<DataScript>().id == id)
+            {
+                i.GetComponent<BeeLogick>().beeParticle.Play();
+                break;
+            }
+        }
+    }
     public void OnStateUpdate(string jsonData)
     {
         BeeMData data = BeeMData.CreateFromJSON(jsonData);
@@ -98,6 +121,25 @@ public class BeeS : MonoBehaviour
                 }
             }
         }
+        if (beeFlowerList.Count != 0)
+        {
+            foreach (GameObject i in beeFlowerList)
+            {
+                if (i.GetComponent<DataScript>().id == beesId)
+                {
+                    i.GetComponent<DataScript>().beeState = state;
+                    if (state == "hibernate")
+                    {
+                        i.GetComponent<BeeSliderPosition>().sliderDown = false;
+                        beeFlowerList.Remove(i);
+                        beeInHaiveList.Add(i);
+                        // Check if Bee active / hibernate after Update state
+                        BeeHibernateCheck(i);
+                        break;
+                    }
+                }
+            }
+        }
         if (beeInHaiveList.Count != 0)
         {
             foreach (GameObject i in beeInHaiveList)
@@ -118,30 +160,55 @@ public class BeeS : MonoBehaviour
             }
         }            
     }
-
     public void BeeHibernateCheck(GameObject bee)
     {
         if(bee.GetComponent<DataScript>().beeState == "hibernate")
         {            
-            bee.GetComponent<FlyMoovment>().BeeGoToHive();                  
+            bee.GetComponent<BeeLogick>().BeeGoToHive();                  
         }
         else if (bee.GetComponent<DataScript>().beeState == "active")
         {           
-            bee.GetComponent<FlyMoovment>().BeeBackToFly();                  
+            bee.GetComponent<BeeLogick>().BeeBackToFly();                  
         }
     }
     public void DeliteBee(int beeId)
     {
-        foreach(GameObject i in beeList)
+        if (beeFlowerList.Count != 0)
         {
-            if(i.GetComponent<DataScript>().id == beeId)
+            foreach (GameObject i in beeFlowerList)
             {
-                Destroy(i);
-                beeList.Remove(i);
-                break;
+                if (i.GetComponent<DataScript>().id == beeId)
+                {
+                    beeFlowerList.Remove(i);
+                    Vector3 p = i.transform.position;
+                    Destroy(i);
+                    GameObject ef = Instantiate(beeDestroyEf, p, transform.rotation);
+                    Destroy(ef, 0.5f);
+                    break;
+                }
             }
         }
-    } 
+        if (beeList.Count != 0)
+        {
+            foreach (GameObject i in beeList)
+            {
+                if (i.GetComponent<DataScript>().id == beeId)
+                {
+                    beeList.Remove(i);
+                    Vector3 p = i.transform.position;
+                    Destroy(i);
+                    GameObject ef = Instantiate(beeDestroyEf, p, transform.rotation);                  
+                    Destroy(ef, 0.5f);
+                    break;
+                }
+            }
+        }                
+    }
+    public void SetBeeListFlowerFly(GameObject bee)
+    {        
+        beeFlowerList.Remove(bee);
+        beeList.Add(bee);
+    }
     public void BeeMeetFlowerWeb(int beeId, int flowerId)
     {
         if (!Application.isEditor)
@@ -171,12 +238,32 @@ public class BeeS : MonoBehaviour
                 break;
             }
         }
+        foreach (GameObject i in beeFlowerList)
+        {
+            if (i.GetComponent<DataScript>().id == beesId)
+            {
+                i.GetComponent<BeeSliderPosition>().slider.value = sliderVal;
+                break;
+            }
+        }
+        foreach (GameObject i in beeInHaiveList)
+        {
+            if (i.GetComponent<DataScript>().id == beesId)
+            {
+                i.GetComponent<BeeSliderPosition>().slider.value = sliderVal;
+                break;
+            }
+        }
     }
     private GameObject GetRundomBee()
     {
+        GameObject bee;
         int max = beeList.Count;
-        rundomBeeNum = Random.Range(0, max);
-        return beeList[rundomBeeNum];
+        int rundomBeeNum = Random.Range(0, max);
+        bee = beeList[rundomBeeNum];
+        beeFlowerList.Add(bee);
+        beeList.Remove(bee);
+        return bee;
     }
     private Vector3 RundomPointToInst()
     {
@@ -211,7 +298,15 @@ public class BeeS : MonoBehaviour
                 Destroy(i);
             }
         }
-        beeInHaiveList.Clear();       
+        beeInHaiveList.Clear();
+        if (beeFlowerList.Count != 0)
+        {
+            foreach (GameObject i in beeFlowerList)
+            {
+                Destroy(i);
+            }
+        }
+        beeFlowerList.Clear();
         beesNum = 0;
         timerToFindFlower = 5;
     }

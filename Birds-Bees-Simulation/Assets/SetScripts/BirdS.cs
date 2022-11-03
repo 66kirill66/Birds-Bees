@@ -12,16 +12,15 @@ public class BirdS : MonoBehaviour
     [SerializeField] GameObject birdPrifab;
     [SerializeField] GameObject birdPrifabTo;
     public List<GameObject> birdsList = new List<GameObject>();
+    public List<GameObject> birdsFruitList = new List<GameObject>();
     float PosX, PosY, PosZ;
     int birdsNum;
     public bool isCheck;
     [SerializeField] int birdCheck;
-    public float timerToFindFruit = 5;
-    bool findFruit;
     GameObject bird;
-    int num;
+    public GameObject birdParticle;
+    public float timerToFindFruit = 5;
 
-    bool find;
 
     public class BirdData
     {
@@ -56,10 +55,13 @@ public class BirdS : MonoBehaviour
             }
             else if (timerToFindFruit <= 0)
             {
-                bird = GetRundomBird();
-                if (bird != null)
-                {                    
-                    bird.GetComponent<FlyMoovment>().BirdMoveToFruit();
+                if(FindObjectOfType<BirdS>().birdsList.Count != 0)
+                {
+                    bird = GetRundomBird();
+                    if (bird != null)
+                    {
+                        bird.GetComponent<BirdLogick>().BirdMoveToFruit();
+                    }
                 }
                 timerToFindFruit = 5;
             }
@@ -74,21 +76,45 @@ public class BirdS : MonoBehaviour
     }
     public void DeliteBird(int birdId)
     {
+        foreach (GameObject i in birdsFruitList)
+        {
+            if (i.GetComponent<DataScript>().id == birdId)
+            {
+                birdsFruitList.Remove(i);
+                Vector3 p = i.transform.position;
+                Destroy(i);
+                GameObject ef = Instantiate(birdParticle, p, transform.rotation);
+                Destroy(ef, 0.5f);
+                break;
+            }
+        }
         foreach (GameObject i in birdsList)
         {
             if (i.GetComponent<DataScript>().id == birdId)
             {
-                Destroy(i);
                 birdsList.Remove(i);
+                Vector3 p = i.transform.position;
+                Destroy(i);
+                GameObject ef = Instantiate(birdParticle, p, transform.rotation);               
+                Destroy(ef, 0.5f);               
                 break;
             }
-        }
+        }     
     }
     private GameObject GetRundomBird()
     {
+        GameObject bird;
         int max = birdsList.Count;
-        num = Random.Range(0, max);
-        return birdsList[num];
+        int rundomBirdNum = Random.Range(0, max);
+        bird = birdsList[rundomBirdNum];
+        birdsFruitList.Add(bird);
+        birdsList.Remove(bird);
+        return bird;
+    }
+    public void SetBirdListFruitFly(GameObject bird)
+    {
+        birdsFruitList.Remove(bird);
+        birdsList.Add(bird);
     }
 
     public void SetBirdSliderValue(string jsonData)
@@ -96,14 +122,28 @@ public class BirdS : MonoBehaviour
         BirdData data = BirdData.CreateFromJSON(jsonData);
         int sliderVal = data.sliderNewValue;
         int birdId = data.birdId;
-        foreach (GameObject i in birdsList)
+        if(birdsList.Count != 0)
         {
-            if (i.GetComponent<DataScript>().id == birdId)
+            foreach (GameObject i in birdsList)
             {
-                i.GetComponent<BirdSliderPosition>().slider.value = sliderVal;
-                break;
+                if (i.GetComponent<DataScript>().id == birdId)
+                {
+                    i.GetComponent<BirdSliderPosition>().slider.value = sliderVal;
+                    break;
+                }
             }
-        }
+        }   
+        if(birdsFruitList.Count != 0)
+        {
+            foreach (GameObject i in birdsFruitList)
+            {
+                if (i.GetComponent<DataScript>().id == birdId)
+                {
+                    i.GetComponent<BirdSliderPosition>().slider.value = sliderVal;
+                    break;
+                }
+            }
+        }       
     }  
     public void BirdMeetFruitrWeb(int birdId, int fruitId)
     {
@@ -154,8 +194,15 @@ public class BirdS : MonoBehaviour
             }
         }
         birdsList.Clear();
+        if(birdsFruitList.Count != 0)
+        {
+            foreach (GameObject i in birdsFruitList)
+            {
+                Destroy(i);
+            }
+        }
+        birdsFruitList.Clear();
         birdsNum = 0;
         timerToFindFruit = 5;
-        findFruit = false;
     }
 }

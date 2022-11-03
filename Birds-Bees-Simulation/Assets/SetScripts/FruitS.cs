@@ -14,6 +14,7 @@ public class FruitS : MonoBehaviour
     public List<GameObject> fruitList = new List<GameObject>();
     [SerializeField] GameObject fruitPrifab;
     GameObject place;
+    GameObject placeChangeToFree;
     int fruitsNum;
     public bool isCheck;
     [SerializeField] int fruitCheck;
@@ -47,7 +48,26 @@ public class FruitS : MonoBehaviour
     }
     public void InstantiateFruitCheck()
     {
-        FindFruitPosition();
+        FindFruitPosition();      
+        if (place == null && FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0  )
+        {
+            //int fruitN = GetRundomFruit();
+            //GameObject fruitDel = fruitList[fruitN];
+            GameObject fruitDel = GetRundomFruit();
+            if(fruitDel != null)
+            {
+                GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
+                fruitList.Remove(fruitDel);
+                Destroy(fruitDel);
+                fruitsNum--;
+
+                //new fruit
+                GameObject fruit = Instantiate(fruitPrifab, fruitDel.transform.position, fruitPrifab.transform.rotation);
+                fruit.GetComponent<FruitLogick>().plant = pl;
+                fruitList.Add(fruit);
+                fruitsNum++;
+            }           
+        }
         if (place != null)
         {
             GameObject fruit = Instantiate(fruitPrifab, new Vector3(place.transform.position.x, place.transform.position.y - 3, place.transform.position.z), fruitPrifab.transform.rotation);
@@ -56,27 +76,7 @@ public class FruitS : MonoBehaviour
             fruitsNum++;
             place = null;
         }
-        else if (FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0 && place == null)
-        {
-            //int fruitN = GetRundomFruit();
-            //GameObject fruitDel = fruitList[fruitN];
-            GameObject fruitDel = GetRundomFruit();
-            GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
-            int fruitId = fruitDel.GetComponent<DataScript>().id;
-            if (!Application.isEditor)
-            {
-                //send to Plethora Delite fruit.
-                SetFruitsLevelSend(fruitId);
-            }
-            Destroy(fruitDel);
-            fruitList.Remove(fruitDel);
-            fruitsNum--;
-            //new fruit
-            GameObject fruit = Instantiate(fruitPrifab, fruitDel.transform.position, fruitPrifab.transform.rotation);
-            fruit.GetComponent<FruitLogick>().plant = pl;
-            fruitList.Add(fruit);
-            fruitsNum++;
-        }
+        else { return; }
     }
 
     public void SetFruitsLevelSend(int fruitId)
@@ -93,12 +93,12 @@ public class FruitS : MonoBehaviour
             foreach (GameObject i in fruitList)
             {
                 if (i.GetComponent<DataScript>().id == fruitId)
-                {
+                {                   
+                    fruitList.Remove(i.gameObject);
+                    Destroy(i);
                     GameObject pl = i.GetComponent<FruitLogick>().plant;
                     pl.GetComponent<PlantPlace>().isFree = true;
                     FindObjectOfType<InternalFunc>().FreePlantPlace.Add(pl);
-                    fruitList.Remove(i.gameObject);
-                    Destroy(i);
                     fruitsNum--;
                     break;
                 }
@@ -107,23 +107,24 @@ public class FruitS : MonoBehaviour
     }
     public void BirdEatFruit(int fruitId) 
     {
-        if(fruitList.Count != 0)
+        foreach (GameObject i in fruitList)
         {
-            foreach (GameObject i in fruitList)
+            if (i.GetComponent<DataScript>().id == fruitId)
             {
-                if (i.GetComponent<DataScript>().id == fruitId)
-                {
-                    GameObject pl = i.GetComponent<FruitLogick>().plant;
-                    pl.GetComponent<PlantPlace>().isFree = true;
-                    FindObjectOfType<InternalFunc>().FreePlantPlace.Add(pl);
-                    fruitList.Remove(i.gameObject);
-                    Destroy(i);
-                    SetFruitsLevelSend(fruitId);
-                    fruitsNum--;
-                    break;
-                }
+                placeChangeToFree = i.GetComponent<FruitLogick>().plant;
+                fruitList.Remove(i);
+                Destroy(i, 1f);                              
+                Invoke("SetPlaceFree", 3);
+                SetFruitsLevelSend(fruitId);
+                fruitsNum--;
+                break;
             }
-        }       
+        }
+    }
+    private void SetPlaceFree()
+    {
+        placeChangeToFree.GetComponent<PlantPlace>().isFree = true;
+        FindObjectOfType<InternalFunc>().FreePlantPlace.Add(placeChangeToFree);
     }
     public void CreateNewFruit(int flowerId)   // send receptor Id 
     {
@@ -171,8 +172,8 @@ public class FruitS : MonoBehaviour
                     break;
                 }
             }
-        }
-        if(data.flowerId == -1)
+        }       
+        if (data.flowerId == -1 )
         {
             FindFruitPosition();
             if (FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0 && place == null)
@@ -180,24 +181,29 @@ public class FruitS : MonoBehaviour
                 //int fruitN = GetRundomFruit();
                 //GameObject fruitDel = fruitList[fruitN];
                 GameObject fruitDel = GetRundomFruit();
-                GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
-                int fruitId = fruitDel.GetComponent<DataScript>().id;
-                Destroy(fruitDel);
-                fruitList.Remove(fruitDel);
-                fruitsNum--;
-                if (!Application.isEditor)
-                {
-                    //send to Plethora Delite fruit.
-                    SetFruitsLevelSend(fruitId);
+                if (fruitDel != null)
+                {                    
+                    GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
+                    int fruitId = fruitDel.GetComponent<DataScript>().id;
+                    Destroy(fruitDel);
+                    fruitList.Remove(fruitDel);
+                    fruitsNum--;
+                    if (!Application.isEditor)
+                    {
+                        //send to Plethora Delite fruit.
+                        SetFruitsLevelSend(fruitId);
+                    }
+                    //new fruit
+                    GameObject fruit = Instantiate(fruitPrifab, fruitDel.transform.position, fruitPrifab.transform.rotation);
+                    fruit.GetComponent<DataScript>().id = data.fruitId;
+                    fruit.GetComponent<FruitLogick>().plant = pl;
+                    fruit.GetComponent<FruitLogick>().ef.SetActive(true);
+                    fruitList.Add(fruit);
+                    fruitsNum++;
                 }
-                //new fruit
-                GameObject fruit = Instantiate(fruitPrifab, fruitDel.transform.position, fruitPrifab.transform.rotation);
-                fruit.GetComponent<DataScript>().id = data.fruitId;
-                fruit.GetComponent<FruitLogick>().plant = pl;
-                fruitList.Add(fruit);
-                fruitsNum++;
+                else { SetFruitsLevelSend(data.fruitId); }
             }
-            if (data.flowerId == -1 && place != null)
+            if(place != null)
             {
                 GameObject fruit = Instantiate(fruitPrifab, new Vector3(place.transform.position.x, place.transform.position.y - 3, place.transform.position.z), fruitPrifab.transform.rotation);
                 fruit.GetComponent<DataScript>().id = data.fruitId;
@@ -205,24 +211,24 @@ public class FruitS : MonoBehaviour
                 fruitList.Add(fruit);
                 fruitsNum++;
                 place = null;
-            }           
+            }
         }
     }
     private GameObject GetRundomFruit()
     {
-        GameObject f = null;
+        GameObject fruit = null;
         if (fruitList.Count != 0) 
         {
             foreach (GameObject i in fruitList)
             {
                 if (i.GetComponent<FruitLogick>().haveBird == false)
                 {
-                    f = i;
+                    fruit = i;
                     break;
                 }
             }          
         }
-        return f;
+        return fruit;
     }
     //private int GetRundomFruit()
     //{

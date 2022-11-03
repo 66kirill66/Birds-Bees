@@ -1498,10 +1498,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 516450402811343041}
-  - component: {fileID: -3389766080997102518}
   - component: {fileID: 5941396588916377021}
   - component: {fileID: 6102097791702470340}
   - component: {fileID: 5001485032739308290}
+  - component: {fileID: 7785831373303061820}
   m_Layer: 0
   m_Name: NewBird
   m_TagString: Bird
@@ -1526,25 +1526,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-3389766080997102518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516450402811178273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f74dedb35767b1f46a636aae8ba36549, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yBeeOfsset: 0
-  hive: {fileID: 4403730295435153798, guid: db442ec8d8b47074ba82112e68c58637, type: 3}
-  flowerPrifab: {fileID: 0}
-  fruitPrifab: {fileID: 0}
-  isBird: 1
-  beeId: 0
-  birdId: 0
 --- !u!114 &5941396588916377021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1591,6 +1572,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.057229586, y: 0.084314324, z: 0.04900112}
   m_Center: {x: 0.00010825634, y: 0.013398302, z: -0.0010965455}
+--- !u!114 &7785831373303061820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516450402811178273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d4d243c0a204e04cabd938833053fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fruitPrifab: {fileID: 0}
+  birdId: 0
 --- !u!1 &516450402811178275
 GameObject:
   m_ObjectHideFlags: 0

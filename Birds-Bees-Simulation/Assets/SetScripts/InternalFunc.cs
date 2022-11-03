@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class InternalFunc : MonoBehaviour
 {
@@ -13,7 +11,6 @@ public class InternalFunc : MonoBehaviour
 
     [DllImport("__Internal")]
     public static extern void ClickFunc(int id);
-    public static bool reset;
     RaycastHit hit;
     [SerializeField] Camera mainCamera;
     public List<GameObject> FreePlantPlace = new List<GameObject>();
@@ -27,10 +24,7 @@ public class InternalFunc : MonoBehaviour
         Time.timeScale = 1;
         if (!Application.isEditor)
         {
-            if (reset == false)
-            {
-                callTNITfunction();
-            }
+            callTNITfunction();
         }
     }
     private void PlantPlaceListFinder()
@@ -89,12 +83,7 @@ public class InternalFunc : MonoBehaviour
             Time.timeScale = 1;
         }
     }
-    //public void ResetSimulation()
-    //{
-    //    Time.timeScale = 0;
-    //    reset = true;
-    //    SceneManager.LoadScene(0);
-    //}
+    
     public void ResetSimulation()
     {
         Time.timeScale = 0;

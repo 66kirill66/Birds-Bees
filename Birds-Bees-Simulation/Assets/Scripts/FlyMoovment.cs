@@ -26,7 +26,8 @@ public class FlyMoovment : MonoBehaviour
     bool isFruit;
     // Anim And Particle
     Animator anim;
-    [SerializeField] GameObject beeParticle;
+    public ParticleSystem beeParticle;
+   
 
     void Start()
     {
@@ -71,12 +72,8 @@ public class FlyMoovment : MonoBehaviour
     }
     public void BirdMoveToFruit()
     {
-        if (fly == true)
-        {
-            fly = false;           
-            StopAllCoroutines();
-            FindFruitPosition();
-        }
+        StopAllCoroutines();
+        FindFruitPosition();
         if (fruitPrifab != null)
         {
             BirdGoToFruit();
@@ -95,6 +92,7 @@ public class FlyMoovment : MonoBehaviour
     public void BeeBackToFly()
     {
         StopAllCoroutines();
+        isHaive = false;
         isFlower = false;
         fly = true;
         anim.enabled = true;
@@ -123,7 +121,6 @@ public class FlyMoovment : MonoBehaviour
     // loop Func
     private IEnumerator FlowerTransform()
     {
-        isFlower = true;
         while (isFlower == true)
         {         
             Vector3 startPos = transform.position;
@@ -131,19 +128,24 @@ public class FlyMoovment : MonoBehaviour
             while (travel < 1)
             {
                 travel += Time.deltaTime * 0.3f;
-                transform.position = Vector3.Lerp(startPos, endPos, travel);
+                transform.position = Vector3.Lerp(startPos, new Vector3(endPos.x - 0.2f, endPos.y, endPos.z), travel);
                 yield return new WaitForEndOfFrame();
-                if (ReturnDist() < 2)
+                if (ReturnDist() < 1f)
                 {
                     if (flowerPrifab != null)
-                    {
-                        flowerPrifab.GetComponent<FlowerScript>().haveBee = false;
-                        FindObjectOfType<BeeS>().BeeMeetFlowerWeb(beeId, flowerId);  // web          
-                        flowerPrifab = null;
-                    }                             
+                    {                       
+                        FindObjectOfType<BeeS>().BeeMeetFlowerWeb(beeId, flowerId);  // web
+                        //flowerPrifab.GetComponent<FlowerScript>().haveBee = false;
+                        //flowerPrifab = null;
+                        Invoke("BeeBackToFly", 0.8f);
+                        Invoke("NulledllFowerPrifab", 4f);
+                        //beeParticle.Play();
+                    }
+                    
                 }
             }
-            BeeBackToFly();
+            //Invoke("BeeBackToFly", 0.8f);
+            //BeeBackToFly();
         }
     }
     private IEnumerator FruitTransform()
@@ -155,19 +157,36 @@ public class FlyMoovment : MonoBehaviour
             while (travel < 1)
             {
                 travel += Time.deltaTime * 0.3f;
-                transform.position = Vector3.Lerp(startPos, new Vector3(endPos.x - 1f, endPos.y, endPos.z), travel);
+                transform.position = Vector3.Lerp(startPos, new Vector3(endPos.x - 0.2f, endPos.y, endPos.z), travel);
                 yield return new WaitForEndOfFrame();
-                if (ReturnDist() < 2)
-                {                  
+                if (ReturnDist() < 1f)
+                {
                     if(fruitPrifab != null)
                     {
-                        FindObjectOfType<BirdS>().BirdMeetFruitrWeb(birdId, fruitId);
-                        fruitPrifab.GetComponent<FruitLogick>().haveBird = false;
-                        fruitPrifab = null;
-                    }                                                                                                               
+                        FindObjectOfType<BirdS>().BirdMeetFruitrWeb(birdId, fruitId);                       
+                    }                   
                 }              
             }
-            BirdBackToFly();
+            Invoke("BirdBackToFly", 0.8f);
+            Invoke("NulledlFruitPrifab", 4f);
+            //Invoke("BirdBackToFly", 0.8f);
+        }
+    }
+    private void NulledlFruitPrifab()
+    {
+        if (fruitPrifab != null)
+        {
+            fruitPrifab.GetComponent<FruitLogick>().haveBird = false;
+            fruitPrifab = null;
+        }
+    }
+    private void NulledllFowerPrifab()
+    {
+        if (flowerPrifab != null)
+        {
+
+            flowerPrifab.GetComponent<FlowerScript>().haveBee = false;
+            flowerPrifab = null;
         }
     }
     private IEnumerator HivePlacee()
@@ -202,14 +221,14 @@ public class FlyMoovment : MonoBehaviour
             }
             if (ReturnDist() > 40)
             {
-                if (PosX > transform.position.x)
-                {
-                    anim.SetBool("Move Left", true);
-                }
-                else
-                {
-                    anim.SetBool("Move Left", false);
-                }
+                //if (PosX > transform.position.x)
+                //{
+                //    anim.SetBool("Move Left", true);
+                //}
+                //else
+                //{
+                //    anim.SetBool("Move Left", false);
+                //}
                 Vector3 startPos = transform.position;
                 float travel = 0;
                 while (travel < 1)

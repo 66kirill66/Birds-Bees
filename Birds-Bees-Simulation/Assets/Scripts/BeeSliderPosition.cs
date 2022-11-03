@@ -36,10 +36,6 @@ public class BeeSliderPosition : MonoBehaviour
             FindObjectOfType<BeeS>().SetBeeEnergySendToWeb(beeId, value);
             totalTime = 0;
         }
-        //if(slider.value == 0)
-        //{
-        //    GetComponent<FlyMoovment>().BeeGoToHive();
-        //}
         slider.transform.position = new Vector3(transform.position.x, transform.position.y + offset, transform.position.z);
         slider.transform.rotation = Quaternion.Euler(0, 0, 0);
     }

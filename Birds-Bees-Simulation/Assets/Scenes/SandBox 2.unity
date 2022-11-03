@@ -12552,7 +12552,7 @@ MonoBehaviour:
   fruitPrifab: {fileID: 1973412840630774753, guid: 4823edf4a26399b41816a3eb0fd1a2ac,
     type: 3}
   isCheck: 0
-  fruitCheck: 4
+  fruitCheck: 1
 --- !u!4 &1918636678
 Transform:
   m_ObjectHideFlags: 0
@@ -12584,8 +12584,11 @@ MonoBehaviour:
   birdPrifabTo: {fileID: 516450402811178273, guid: 2753e50f58ff85d4cbfbd2bd1943cff5,
     type: 3}
   birdsList: []
+  birdsFruitList: []
   isCheck: 0
-  birdCheck: 3
+  birdCheck: 1
+  birdParticle: {fileID: 3433533837111776940, guid: 26895640f28427f4fb071657faab90c2,
+    type: 3}
   timerToFindFruit: 5
 --- !u!114 &1918636680
 MonoBehaviour:
@@ -12613,13 +12616,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbd9b177c3055d46a3c2e8b87203f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerToFindFlower: 5
   beePrifab: {fileID: 7435679193790829257, guid: c99f679df439ed145b6b8a8fa26c8b41,
     type: 3}
   beeList: []
+  beeFlowerList: []
   beeInHaiveList: []
   isCheck: 0
-  beesCheck: 2
+  beesCheck: 1
+  beeDestroyEf: {fileID: 1385658103107342498, guid: 6302e3f5e15ddee4b8de5f2f26c4549d,
+    type: 3}
+  timerToFindFlower: 5
 --- !u!114 &1918636682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12637,7 +12643,7 @@ MonoBehaviour:
   flowerPrifab: {fileID: 4652403918176721289, guid: 53be7a0a3719dbd488b0cd16df9af589,
     type: 3}
   isCheck: 0
-  flowersCheck: 9
+  flowersCheck: 1
 --- !u!114 &1918636683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14578,6 +14584,26 @@ PrefabInstance:
     - target: {fileID: 2205689561969339731, guid: 6e09e2e35b9f5f549b6c1bcfc7bdf1d3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2205689561969339740, guid: 6e09e2e35b9f5f549b6c1bcfc7bdf1d3,
+        type: 3}
+      propertyPath: m_Depth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2205689561969339740, guid: 6e09e2e35b9f5f549b6c1bcfc7bdf1d3,
+        type: 3}
+      propertyPath: m_AllowMSAA
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2205689561969339740, guid: 6e09e2e35b9f5f549b6c1bcfc7bdf1d3,
+        type: 3}
+      propertyPath: near clip plane
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2205689561969339740, guid: 6e09e2e35b9f5f549b6c1bcfc7bdf1d3,
+        type: 3}
+      propertyPath: m_AllowDynamicResolution
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2205689561969339742, guid: 6e09e2e35b9f5f549b6c1bcfc7bdf1d3,
