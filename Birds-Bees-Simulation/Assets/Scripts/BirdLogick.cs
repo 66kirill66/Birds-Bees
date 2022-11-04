@@ -44,11 +44,11 @@ public class BirdLogick : MonoBehaviour
     }
     public void BirdBackToFly()
     {
-        isFruit = false;
         StopAllCoroutines();
-        FindObjectOfType<BirdS>().SetBirdListFruitFly(gameObject);
+        isFruit = false;        
         fly = true;
         StartCoroutine(FlyRange());
+        FindObjectOfType<BirdS>().SetBirdListFruitFly(gameObject);
     }
     private void FindFruitPosition()
     {
@@ -89,26 +89,18 @@ public class BirdLogick : MonoBehaviour
     {
         while (isFruit == true)
         {
-            bool send = false;
             Vector3 startPos = transform.position;
             float travel = 0;
             while (travel < 1)
             {
                 travel += Time.deltaTime * 0.3f;
-                transform.position = Vector3.Lerp(startPos, new Vector3(endPos.x - 0.2f, endPos.y, endPos.z), travel);
-                yield return new WaitForEndOfFrame();
                 CheckIfFruitNotDelited();
-                if (ReturnDist() < 0.5f)
-                {
-                    if (send == false)
-                    {
-                        FindObjectOfType<BirdS>().BirdMeetFruitrWeb(birdId, fruitId);
-                        send = true;
-                    }
-                }
-            }                   
-            Invoke("NulledlFruitPrifab", 5f);
-            Invoke("BirdBackToFly",1);            
+                transform.position = Vector3.Lerp(startPos, new Vector3(endPos.x - 0.2f, endPos.y, endPos.z), travel);
+                yield return new WaitForEndOfFrame();                 
+            }
+            FindObjectOfType<BirdS>().BirdMeetFruitrWeb(birdId, fruitId);
+            Invoke("NulledlFruitPrifab", 4f);
+            Invoke("BirdBackToFly",1);                        
             isFruit = false;
         }
     }
@@ -118,9 +110,10 @@ public class BirdLogick : MonoBehaviour
         {           
             if (fruitPrifab.GetComponent<FruitLogick>() != null)
             {
-                fruitPrifab.GetComponent<FruitLogick>().haveBird = false;               
+                fruitPrifab.GetComponent<FruitLogick>().haveBird = false;                
             }
             fruitPrifab = null;
+            fruitToCome = null;
         }
     }
     private IEnumerator FlyRange()

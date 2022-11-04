@@ -125,31 +125,21 @@ public class BeeLogick : MonoBehaviour
     {
         while (isFlower == true)
         {
-            bool send = false;
             Vector3 startPos = transform.position;
             float travel = 0;
             while (travel < 1)
             {
                 travel += Time.deltaTime * 0.3f;
-                transform.position = Vector3.Lerp(startPos, new Vector3(endPos.x - 0.2f, endPos.y, endPos.z), travel);
-               // CheckIfFlowerNotDelited();
-                yield return new WaitForEndOfFrame();
                 CheckIfFlowerNotDelited();
-                if (ReturnDist() < 0.5f)
-                {
-                    if (send == false)
-                    {
-                        FindObjectOfType<BeeS>().BeeMeetFlowerWeb(beeId, flowerId);  // web       
-                        send = true;
-                        //beeParticle.Play();
-                    }
-                }
-            }                                   
-            Invoke("NulledllFowerPrifab", 5f);
+                transform.position = Vector3.Lerp(startPos, new Vector3(endPos.x - 0.2f, endPos.y, endPos.z), travel);
+                yield return new WaitForEndOfFrame();
+            }
+            FindObjectOfType<BeeS>().BeeMeetFlowerWeb(beeId, flowerId);  // web  
+            FindObjectOfType<BeeS>().SetBeeListFlowerFly(gameObject);
+            Invoke("NulledllFowerPrifab", 4f);
             Invoke("BeeBackToFly", 1);
             isFlower = false;
-        }
-        FindObjectOfType<BeeS>().SetBeeListFlowerFly(gameObject);
+        }       
     }
     private void CheckIfFlowerNotDelited()
     {
@@ -191,6 +181,7 @@ public class BeeLogick : MonoBehaviour
                 flowerPrifab.GetComponent<FlowerScript>().haveBee = false;               
             }
             flowerPrifab = null;
+            flowerToCome = null;
         }
     }
     private void LookAtPoint()

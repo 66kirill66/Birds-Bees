@@ -12552,7 +12552,7 @@ MonoBehaviour:
   fruitPrifab: {fileID: 1973412840630774753, guid: 4823edf4a26399b41816a3eb0fd1a2ac,
     type: 3}
   isCheck: 0
-  fruitCheck: 1
+  fruitCheck: 8
 --- !u!4 &1918636678
 Transform:
   m_ObjectHideFlags: 0

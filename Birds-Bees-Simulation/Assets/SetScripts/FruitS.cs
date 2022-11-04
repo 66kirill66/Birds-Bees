@@ -186,7 +186,6 @@ public class FruitS : MonoBehaviour
                     GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
                     int fruitId = fruitDel.GetComponent<DataScript>().id;
                     Destroy(fruitDel);
-                    fruitList.Remove(fruitDel);
                     fruitsNum--;
                     if (!Application.isEditor)
                     {
@@ -201,7 +200,7 @@ public class FruitS : MonoBehaviour
                     fruitList.Add(fruit);
                     fruitsNum++;
                 }
-                else { SetFruitsLevelSend(data.fruitId); }
+                else { return; }
             }
             if(place != null)
             {
@@ -224,6 +223,7 @@ public class FruitS : MonoBehaviour
                 if (i.GetComponent<FruitLogick>().haveBird == false)
                 {
                     fruit = i;
+                    fruitList.Remove(fruit);               
                     break;
                 }
             }          

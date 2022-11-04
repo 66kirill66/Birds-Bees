@@ -133,7 +133,6 @@ public class FlowerS : MonoBehaviour
             {
                 GameObject pl = flowerToDel.GetComponent<FlowerScript>().plant;
                 int flowerId = flowerToDel.GetComponent<DataScript>().id;
-                flowerList.Remove(flowerToDel);
                 Destroy(flowerToDel);
                 flowersNum--;
                 if (!Application.isEditor)
@@ -148,7 +147,7 @@ public class FlowerS : MonoBehaviour
                 flowerList.Add(flower);
                 flowersNum++;
             }
-            else { SetFlowersLevelWeb(id); }
+            else { return;}
         }
         if (place != null)
         {
@@ -168,6 +167,7 @@ public class FlowerS : MonoBehaviour
             if (i.GetComponent<FlowerScript>().haveBee == false)
             {
                 n = i;
+                flowerList.Remove(i);
                 break;
             }
         }

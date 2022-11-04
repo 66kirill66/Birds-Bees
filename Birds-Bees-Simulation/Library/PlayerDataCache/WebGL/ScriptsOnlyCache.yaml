@@ -35,10 +35,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -110,63 +108,63 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11430}
     - Class: 114
-      Script: {instanceID: 12206}
+      Script: {instanceID: 11680}
     - Class: 114
-      Script: {instanceID: 12238}
+      Script: {instanceID: 12208}
     - Class: 114
-      Script: {instanceID: 12258}
+      Script: {instanceID: 12240}
     - Class: 114
-      Script: {instanceID: 12440}
+      Script: {instanceID: 12260}
     - Class: 114
-      Script: {instanceID: 12558}
+      Script: {instanceID: 12442}
     - Class: 114
-      Script: {instanceID: 12742}
+      Script: {instanceID: 12560}
     - Class: 114
-      Script: {instanceID: 12822}
+      Script: {instanceID: 12744}
     - Class: 114
-      Script: {instanceID: 12826}
+      Script: {instanceID: 12824}
     - Class: 114
-      Script: {instanceID: 12944}
+      Script: {instanceID: 12828}
     - Class: 114
-      Script: {instanceID: 13056}
+      Script: {instanceID: 12946}
     - Class: 114
-      Script: {instanceID: 13172}
+      Script: {instanceID: 13058}
     - Class: 114
-      Script: {instanceID: 13190}
+      Script: {instanceID: 13174}
     - Class: 114
-      Script: {instanceID: 13492}
+      Script: {instanceID: 13192}
     - Class: 114
-      Script: {instanceID: 13540}
+      Script: {instanceID: 13494}
     - Class: 114
-      Script: {instanceID: 13554}
+      Script: {instanceID: 13542}
     - Class: 114
-      Script: {instanceID: 13674}
+      Script: {instanceID: 13556}
     - Class: 114
-      Script: {instanceID: 13784}
+      Script: {instanceID: 13676}
     - Class: 114
-      Script: {instanceID: 13856}
+      Script: {instanceID: 13786}
     - Class: 114
-      Script: {instanceID: 13880}
+      Script: {instanceID: 13858}
     - Class: 114
-      Script: {instanceID: 13944}
+      Script: {instanceID: 13882}
     - Class: 114
-      Script: {instanceID: 14048}
+      Script: {instanceID: 13946}
     - Class: 114
-      Script: {instanceID: 14074}
+      Script: {instanceID: 14050}
     - Class: 114
-      Script: {instanceID: 14090}
+      Script: {instanceID: 14076}
     - Class: 114
-      Script: {instanceID: 14114}
+      Script: {instanceID: 14092}
     - Class: 114
-      Script: {instanceID: 14130}
+      Script: {instanceID: 14116}
     - Class: 114
-      Script: {instanceID: 14142}
+      Script: {instanceID: 14132}
     - Class: 114
-      Script: {instanceID: 30142}
+      Script: {instanceID: 14144}
     - Class: 114
-      Script: {instanceID: 31390}
+      Script: {instanceID: 54254}
     - Class: 114
-      Script: {instanceID: 45274}
+      Script: {instanceID: 55502}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -311,6 +309,12 @@ ScriptsOnlyBuild:
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GroupMesh
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
     className: TestResultRendererCallback
@@ -442,7 +446,7 @@ ScriptsOnlyBuild:
     className: ControlPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: dac53a68646990da4c723f759b387563
+      Hash: bad542ba5b59ec1539c0e33a7b45e207
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BirdSliderPosition
@@ -1016,12 +1020,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GroupMesh
   platform: 20
   scenePathNames:
   - Assets/Scenes/SandBox 2.unity
