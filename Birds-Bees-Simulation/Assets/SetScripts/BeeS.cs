@@ -29,6 +29,7 @@ public class BeeS : MonoBehaviour
         public int sliderNewValue;
         public string stateNewValue;
         public int beeId;
+        public int sliderValue;
         public static BeeMData CreateFromJSON(string json)
         {
             BeeMData beeMDataData = JsonUtility.FromJson<BeeMData>(json);
@@ -44,10 +45,17 @@ public class BeeS : MonoBehaviour
             int id = 1;
             for (int i = 0; i < beesCheck; i++)
             {
-                InstantiateBee(id);
+                InstantiateBeeCheck(id);
                 id++;
             }
         }
+    }
+    public void InstantiateBeeCheck(int id)
+    {
+        GameObject beeP = Instantiate(beePrifab, RundomPointToInst(), beePrifab.transform.rotation);
+        beeP.AddComponent<DataScript>().id = id;
+        beeList.Add(beeP);
+        beesNum++;
     }
     private void Update()
     {
@@ -274,10 +282,12 @@ public class BeeS : MonoBehaviour
         Vector3 createPos = new Vector3(PosX, PosY, PosZ);
         return createPos;
     }
-    public void InstantiateBee(int id)
-    {       
+    public void InstantiateBee(string json)
+    {
+        BeeMData data = BeeMData.CreateFromJSON(json);
         GameObject beeP = Instantiate(beePrifab, RundomPointToInst(), beePrifab.transform.rotation);
-        beeP.AddComponent<DataScript>().id = id;
+        beeP.AddComponent<DataScript>().id = data.beeId;
+        beeP.GetComponent<BeeSliderPosition>().slider.value = data.sliderValue;
         beeList.Add(beeP);
         beesNum++;
     }

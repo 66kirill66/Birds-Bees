@@ -134,12 +134,24 @@ public class BeeLogick : MonoBehaviour
                 transform.position = Vector3.Lerp(startPos, new Vector3(endPos.x - 0.2f, endPos.y, endPos.z), travel);
                 yield return new WaitForEndOfFrame();
             }
-            FindObjectOfType<BeeS>().BeeMeetFlowerWeb(beeId, flowerId);  // web  
-            FindObjectOfType<BeeS>().SetBeeListFlowerFly(gameObject);
+            FindObjectOfType<BeeS>().BeeMeetFlowerWeb(beeId, flowerId);  // web             
             Invoke("NulledllFowerPrifab", 4f);
             Invoke("BeeBackToFly", 1);
             isFlower = false;
         }       
+    }
+    private void NulledllFowerPrifab()
+    {      
+        if (flowerPrifab != null)
+        {
+            if (flowerPrifab.GetComponent<FlowerScript>() != null)
+            {
+                flowerPrifab.GetComponent<FlowerScript>().haveBee = false;
+            }           
+            flowerPrifab = null;
+            flowerToCome = null;
+        }
+        FindObjectOfType<BeeS>().SetBeeListFlowerFly(gameObject);
     }
     private void CheckIfFlowerNotDelited()
     {
@@ -147,7 +159,6 @@ public class BeeLogick : MonoBehaviour
         {
             BeeBackToFly();
             FindObjectOfType<BeeS>().SetBeeListFlowerFly(gameObject);
-            // FindObjectOfType<FlowerS>().flowerList.Remove(flowerEndPos); Check
             flowerToCome = null;
             flowerPrifab = null;           
         }
@@ -172,18 +183,7 @@ public class BeeLogick : MonoBehaviour
         float dis = Vector3.Distance(transform.position, endPos);
         return dis;
     }
-    private void NulledllFowerPrifab()
-    {       
-        if (flowerPrifab != null)
-        {           
-            if (flowerPrifab.GetComponent<FlowerScript>() != null)
-            {
-                flowerPrifab.GetComponent<FlowerScript>().haveBee = false;               
-            }
-            flowerPrifab = null;
-            flowerToCome = null;
-        }
-    }
+   
     private void LookAtPoint()
     {
         Vector3 direction = endPos - transform.position;

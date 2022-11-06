@@ -26,6 +26,7 @@ public class BirdS : MonoBehaviour
     {
         public int sliderNewValue;
         public int birdId;
+        public int value;
         public static BirdData CreateFromJSON(string json)
         {
             BirdData birdSDataData = JsonUtility.FromJson<BirdData>(json);
@@ -40,7 +41,7 @@ public class BirdS : MonoBehaviour
             int id = 1;
             for (int i = 0; i < birdCheck; i++)
             {
-                InstantiateBird(id);
+                InstantiateBirdChek(id);
                 id++;
             }
         }
@@ -66,6 +67,26 @@ public class BirdS : MonoBehaviour
                 timerToFindFruit = 5;
             }
         }     
+    }
+    private void InstantiateBirdChek(int id)
+    {
+        {
+            int birdNum = GetNumberToInstRundomBird();
+            if (birdNum > 3)
+            {
+                GameObject birdPTo = Instantiate(birdPrifabTo, RundomPointToInst(), birdPrifab.transform.rotation);
+                birdPTo.AddComponent<DataScript>().id = id;
+                birdsList.Add(birdPTo);
+                birdsNum++;
+            }
+            else if (birdNum <= 3)
+            {
+                GameObject birdP = Instantiate(birdPrifab, RundomPointToInst(), birdPrifab.transform.rotation);
+                birdP.AddComponent<DataScript>().id = id;
+                birdsList.Add(birdP);
+                birdsNum++;
+            }
+        }
     }
     public void SetBirdEnergySendToWeb(int birdId, int value)
     {
@@ -115,7 +136,7 @@ public class BirdS : MonoBehaviour
     {
         birdsFruitList.Remove(bird);
         birdsList.Add(bird);
-    }
+    }   
 
     public void SetBirdSliderValue(string jsonData)
     {
@@ -166,20 +187,23 @@ public class BirdS : MonoBehaviour
         int numOfBird = Random.Range(0, 6);
         return numOfBird;
     }
-    public void InstantiateBird(int id)
+    public void InstantiateBird(string json)
     {
+        BirdData data = BirdData.CreateFromJSON(json);
         int birdNum = GetNumberToInstRundomBird();
         if (birdNum > 3)
         {
             GameObject birdPTo = Instantiate(birdPrifabTo, RundomPointToInst(), birdPrifab.transform.rotation);
-            birdPTo.AddComponent<DataScript>().id = id;
+            birdPTo.AddComponent<DataScript>().id = data.birdId;
+            birdPTo.GetComponent<BirdSliderPosition>().slider.value = data.value;
             birdsList.Add(birdPTo);
             birdsNum++;
         }
         else if (birdNum <= 3)
         {
             GameObject birdP = Instantiate(birdPrifab, RundomPointToInst(), birdPrifab.transform.rotation);
-            birdP.AddComponent<DataScript>().id = id;
+            birdP.AddComponent<DataScript>().id = data.birdId;
+            birdP.GetComponent<BirdSliderPosition>().slider.value = data.value;
             birdsList.Add(birdP);
             birdsNum++;
         }

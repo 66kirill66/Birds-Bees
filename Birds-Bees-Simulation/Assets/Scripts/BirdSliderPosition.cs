@@ -11,7 +11,7 @@ public class BirdSliderPosition : MonoBehaviour
 
     private void Start()
     {
-        slider.value = 100;
+        //slider.value = 100;
         GetBirdId();
         sliderDown = true;
     }

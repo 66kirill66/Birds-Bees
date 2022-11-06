@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 public class TemperatureS : MonoBehaviour
 {
     [DllImport("__Internal")]
-    public static extern void TempValueSetWeb(int tempId, int value);  // globals.init function
+    public static extern void TempValueSetWeb(int tempId, float value);  // globals.init function
     [SerializeField] GameObject tempCanvas;
     public int id;
     public bool haveTemp;
@@ -24,7 +24,7 @@ public class TemperatureS : MonoBehaviour
             SetTempCanavas();
         }      
     }
-    public void SetTemperatureVal(int value)
+    public void SetTemperatureVal(float value)
     {
         if (!Application.isEditor)
         {

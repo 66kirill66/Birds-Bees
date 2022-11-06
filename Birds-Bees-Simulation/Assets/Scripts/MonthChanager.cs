@@ -60,30 +60,18 @@ public class MonthChanager : MonoBehaviour
         month = 3;
         currentMonth = month;
         monthPosition[month].gameObject.SetActive(true);
-        //SetTemp To Original
-        //if (GetComponent<TemperatureS>().haveTemp == true)
-        //{
-        //    tempObjects[3].GetComponentInChildren<Text>().text = 15.ToString();
-        //    tempObjects[4].GetComponentInChildren<Text>().text = 25.ToString();
-        //    tempObjects[5].GetComponentInChildren<Text>().text = 23.ToString();
-        //    tempObjects[6].GetComponentInChildren<Text>().text = 23.ToString();
-        //    tempObjects[7].GetComponentInChildren<Text>().text = 20.ToString();
-        //    tempObjects[8].GetComponentInChildren<Text>().text = 15.ToString();
-        //    tempObjects[9].GetComponentInChildren<Text>().text = 6.ToString();
-        //    tempObjects[10].GetComponentInChildren<Text>().text = 3.ToString();
-        //    tempObjects[11].GetComponentInChildren<Text>().text = 3.ToString();
-        //}
+        //SetTemp To Original      
         if(tempObjects.Count != 0)
         {
+            tempObjects[0].GetComponentInChildren<Text>().text = 3.ToString();
+            tempObjects[1].GetComponentInChildren<Text>().text = 3.ToString();
+            tempObjects[2].GetComponentInChildren<Text>().text = 6.ToString();
             tempObjects[3].GetComponentInChildren<Text>().text = 15.ToString();
-            tempObjects[4].GetComponentInChildren<Text>().text = 25.ToString();
+            tempObjects[4].GetComponentInChildren<Text>().text = 20.ToString();
             tempObjects[5].GetComponentInChildren<Text>().text = 23.ToString();
             tempObjects[6].GetComponentInChildren<Text>().text = 23.ToString();
-            tempObjects[7].GetComponentInChildren<Text>().text = 20.ToString();
+            tempObjects[7].GetComponentInChildren<Text>().text = 25.ToString();
             tempObjects[8].GetComponentInChildren<Text>().text = 15.ToString();
-            tempObjects[9].GetComponentInChildren<Text>().text = 6.ToString();
-            tempObjects[10].GetComponentInChildren<Text>().text = 3.ToString();
-            tempObjects[11].GetComponentInChildren<Text>().text = 3.ToString();
         }
     }
     void Update()
@@ -127,33 +115,33 @@ public class MonthChanager : MonoBehaviour
     {
         if(isHot == false)
         {
+            tempObjects[0].GetComponentInChildren<Text>().text = 4.ToString();
+            tempObjects[1].GetComponentInChildren<Text>().text = 5.5.ToString();
+            tempObjects[2].GetComponentInChildren<Text>().text = 7.ToString();
             tempObjects[3].GetComponentInChildren<Text>().text = 16.ToString();
-            tempObjects[4].GetComponentInChildren<Text>().text = 27.ToString();
+            tempObjects[4].GetComponentInChildren<Text>().text = 23.ToString();
             tempObjects[5].GetComponentInChildren<Text>().text = 25.ToString();
             tempObjects[6].GetComponentInChildren<Text>().text = 25.ToString();
-            tempObjects[7].GetComponentInChildren<Text>().text = 23.ToString();
+            tempObjects[7].GetComponentInChildren<Text>().text = 27.ToString();
             tempObjects[8].GetComponentInChildren<Text>().text = 16.ToString();
-            tempObjects[9].GetComponentInChildren<Text>().text = 7.ToString();
-            tempObjects[10].GetComponentInChildren<Text>().text = 5.ToString();
-            tempObjects[11].GetComponentInChildren<Text>().text = 4.ToString();
             Text t = tempObjects[month].GetComponentInChildren<Text>();
-            int tempNum = System.Convert.ToInt32(t.text);
+            float tempNum = float.Parse(t.text);
             FindObjectOfType<TemperatureS>().SetTemperatureVal(tempNum);
             isHot = true;
         }
         else
         {
+            tempObjects[0].GetComponentInChildren<Text>().text = 3.ToString();
+            tempObjects[1].GetComponentInChildren<Text>().text = 3.ToString();
+            tempObjects[2].GetComponentInChildren<Text>().text = 6.ToString();
             tempObjects[3].GetComponentInChildren<Text>().text = 15.ToString();
-            tempObjects[4].GetComponentInChildren<Text>().text = 25.ToString();
+            tempObjects[4].GetComponentInChildren<Text>().text = 20.ToString();
             tempObjects[5].GetComponentInChildren<Text>().text = 23.ToString();
             tempObjects[6].GetComponentInChildren<Text>().text = 23.ToString();
-            tempObjects[7].GetComponentInChildren<Text>().text = 20.ToString();
+            tempObjects[7].GetComponentInChildren<Text>().text = 25.ToString();
             tempObjects[8].GetComponentInChildren<Text>().text = 15.ToString();
-            tempObjects[9].GetComponentInChildren<Text>().text = 6.ToString();
-            tempObjects[10].GetComponentInChildren<Text>().text = 3.ToString();
-            tempObjects[11].GetComponentInChildren<Text>().text = 3.ToString();
             Text t = tempObjects[month].GetComponentInChildren<Text>();
-            int tempNum = System.Convert.ToInt32(t.text);
+            float tempNum = float.Parse(t.text);
             FindObjectOfType<TemperatureS>().SetTemperatureVal(tempNum);
             isHot = false;
         }        
@@ -172,10 +160,12 @@ public class MonthChanager : MonoBehaviour
                 monthPosition[11].gameObject.SetActive(false);
             }
             if(FindObjectOfType<TemperatureS>().haveTemp == true)
-            {
-                Text t = tempObjects[month].GetComponentInChildren<Text>();
-                int tempValue = System.Convert.ToInt32(t.text);
-                FindObjectOfType<TemperatureS>().SetTemperatureVal(tempValue);              
+            {               
+                Text t = tempObjects[1].GetComponentInChildren<Text>();
+                float tempValueF = float.Parse(t.text);
+                //Text t = tempObjects[month].GetComponentInChildren<Text>();
+                //int tempValue = System.Convert.ToInt32(t.text);
+                FindObjectOfType<TemperatureS>().SetTemperatureVal(tempValueF);              
             }
             if (FindObjectOfType<LightDay>().havelight == true && FindObjectOfType<TemperatureS>().haveTemp == false)
             {

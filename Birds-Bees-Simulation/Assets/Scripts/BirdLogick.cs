@@ -48,7 +48,6 @@ public class BirdLogick : MonoBehaviour
         isFruit = false;        
         fly = true;
         StartCoroutine(FlyRange());
-        FindObjectOfType<BirdS>().SetBirdListFruitFly(gameObject);
     }
     private void FindFruitPosition()
     {
@@ -76,6 +75,7 @@ public class BirdLogick : MonoBehaviour
             // FindObjectOfType<FruitS>().fruitList.Remove(fruitEndPos);// Check
             fruitToCome = null;
             fruitPrifab = null;
+            FindObjectOfType<BirdS>().SetBirdListFruitFly(gameObject); // Dosent Work
         }
     }
     public void BirdGoToFruit()
@@ -111,10 +111,11 @@ public class BirdLogick : MonoBehaviour
             if (fruitPrifab.GetComponent<FruitLogick>() != null)
             {
                 fruitPrifab.GetComponent<FruitLogick>().haveBird = false;                
-            }
+            }         
             fruitPrifab = null;
             fruitToCome = null;
         }
+        FindObjectOfType<BirdS>().SetBirdListFruitFly(gameObject); // Dosent Work
     }
     private IEnumerator FlyRange()
     {

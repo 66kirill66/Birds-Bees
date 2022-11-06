@@ -12,7 +12,7 @@ public class BeeSliderPosition : MonoBehaviour
 
     private void Start()
     {
-        slider.value = 100;
+        //slider.value = 100;
         totalTime = 0;
         GetBeeId();
         sliderDown = true;
