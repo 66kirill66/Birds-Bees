@@ -11,12 +11,9 @@ public class FlowerS : MonoBehaviour
     public List<GameObject> flowerList = new List<GameObject>();
     public  GameObject place;
     [SerializeField] GameObject flowerPrifab;
-    int flowersNum;
     float yRotation;
     public bool isCheck;
     [SerializeField] int flowersCheck;
-    int rundomBirdNum;
-
     
     void Start()
     {       
@@ -34,51 +31,71 @@ public class FlowerS : MonoBehaviour
     
     private void Ch()
     {
-        FindFlowerPosition();
+        FindFlowerPosition();     
+        if (FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0 && place == null)
+        {
+            if (flowerList.Count > 7)
+            {
+                GameObject flowerToDel = GetRundomFlower();
+                if (flowerToDel != null)
+                {
+                    GameObject pl = flowerToDel.GetComponent<FlowerScript>().plant; // bug 
+                    int flowerId = flowerToDel.GetComponent<DataScript>().id;
+                    Destroy(flowerToDel);
+                    flowerList.Remove(flowerToDel);
+                    
+                    //new Flower
+                    GameObject flower = Instantiate(flowerPrifab, flowerToDel.transform.position, RundomRotation());
+                    flower.GetComponent<FlowerScript>().plant = pl;
+                    flowerList.Add(flower);
+                }
+            }           
+            else
+            {
+                ////new
+                GameObject fruitDel = FindObjectOfType<FruitS>().GetRundomFruit();
+                if (fruitDel != null)
+                {
+                    GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
+                    int fruitId = fruitDel.GetComponent<DataScript>().id;
+                    Destroy(fruitDel);
+                    // fruitsNum--;
+                    if (!Application.isEditor)
+                    {
+                        //send to Plethora Delite fruit.
+                        FindObjectOfType<FruitS>().SetFruitsLevelSend(fruitId);
+                    }
+                    //new flower
+                    GameObject flowerP = Instantiate(flowerPrifab, pl.transform.position, RundomRotation());
+                    flowerP.GetComponent<FlowerScript>().plant = pl;
+                    flowerList.Add(flowerP);
+                }
+            }
+        }
         if (place != null)
         {
             GameObject flower = Instantiate(flowerPrifab, place.transform.position, RundomRotation());
             flower.GetComponent<FlowerScript>().plant = place;
             flowerList.Add(flower);
-            flowersNum++;
             place = null;
         }
-        else if (FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0 && place == null)
-        {
-            // int flowerNumber = GetRundomFlower();
-            // GameObject flowerToDel = flowerList[flowerNumber];   
-            GameObject flowerToDel = GetRundomFlower();
-            if (flowerToDel != null)
-            {
-                GameObject pl = flowerToDel.GetComponent<FlowerScript>().plant; // bug 
-                int flowerId = flowerToDel.GetComponent<DataScript>().id;
-                Destroy(flowerToDel);
-                flowerList.Remove(flowerToDel);
-                if (!Application.isEditor)
-                {
-                    //send to Plethora Delite flower.
-                    SetFlowersLevelWeb(flowerId);
-                }
-                flowersNum--;
-                //new Flower
-                GameObject flower = Instantiate(flowerPrifab, flowerToDel.transform.position, RundomRotation());
-                flower.GetComponent<FlowerScript>().plant = pl;
-                flowerList.Add(flower);
-                flowersNum++;
-            }           
-        }
-        else { return; }
     }
-    public void SetFlowersLevelSend(GameObject flowerPrifab)
+    public void SetFlowersLevelSendObj(GameObject flowerPrifab)
     {
         int flowerId = flowerPrifab.GetComponent<DataScript>().id;
         flowerList.Remove(flowerPrifab);
         Destroy(flowerPrifab,1);
-        flowersNum--;
         if (!Application.isEditor)
         {
            SetFlowersLevelWeb(flowerId);
         }           
+    }
+    public void SetFlowersLevelSendId(int flowerId)
+    {
+        if (!Application.isEditor)
+        {
+            SetFlowersLevelWeb(flowerId);
+        }
     }
     public void ChangeFlowerTofruit(int flowerId)
     {
@@ -98,7 +115,6 @@ public class FlowerS : MonoBehaviour
                     pl.GetComponent<PlantPlace>().isFree = true;
                     FindObjectOfType<InternalFunc>().FreePlantPlace.Add(pl);
                     Destroy(i);
-                    flowersNum--;
                     break;
                 }
             }
@@ -126,28 +142,48 @@ public class FlowerS : MonoBehaviour
         FindFlowerPosition();
         if (FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0 && place == null)
         {
-            //int flowerNumber = GetRundomFlower();
-            //GameObject flowerToDel = flowerList[flowerNumber];
-            GameObject flowerToDel = GetRundomFlower();
-            if(flowerToDel != null)
+            if(flowerList.Count > 10)
             {
-                GameObject pl = flowerToDel.GetComponent<FlowerScript>().plant;
-                int flowerId = flowerToDel.GetComponent<DataScript>().id;
-                Destroy(flowerToDel);
-                flowersNum--;
-                if (!Application.isEditor)
+                GameObject flowerToDel =  GetRundomFlower();
+                if (flowerToDel != null)
                 {
-                    //send to Plethora Delite flower.
-                    SetFlowersLevelWeb(flowerId);
+                    GameObject pl = flowerToDel.GetComponent<FlowerScript>().plant;
+                    int flowerId = flowerToDel.GetComponent<DataScript>().id;
+                    Destroy(flowerToDel);
+                    if (!Application.isEditor)
+                    {
+                        //send to Plethora Delite flower.
+                        SetFlowersLevelWeb(flowerId);
+                    }
+                    //new Flower
+                    GameObject flower = Instantiate(flowerPrifab, flowerToDel.transform.position, RundomRotation());
+                    flower.GetComponent<DataScript>().id = id;
+                    flower.GetComponent<FlowerScript>().plant = pl;
+                    flowerList.Add(flower);
                 }
-                //new Flower
-                GameObject flower = Instantiate(flowerPrifab, flowerToDel.transform.position, RundomRotation());
-                flower.GetComponent<DataScript>().id = id;
-                flower.GetComponent<FlowerScript>().plant = pl;
-                flowerList.Add(flower);
-                flowersNum++;
+            }          
+            else
+            {
+                ////new
+                GameObject fruitDel = FindObjectOfType<FruitS>().GetRundomFruit();
+                if (fruitDel != null)
+                {
+                    GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
+                    int fruitId = fruitDel.GetComponent<DataScript>().id;
+                    Destroy(fruitDel);
+                   // fruitsNum--;
+                    if (!Application.isEditor)
+                    {
+                        //send to Plethora Delite fruit.
+                        FindObjectOfType<FruitS>().SetFruitsLevelSend(fruitId);
+                    }
+                    //new flower
+                    GameObject flower = Instantiate(flowerPrifab, pl.transform.position, RundomRotation());
+                    flower.GetComponent<DataScript>().id = id;
+                    flower.GetComponent<FlowerScript>().plant = pl;
+                    flowerList.Add(flower);
+                }                
             }
-            else { return;}
         }
         if (place != null)
         {
@@ -155,11 +191,10 @@ public class FlowerS : MonoBehaviour
             flower.GetComponent<DataScript>().id = id;
             flower.GetComponent<FlowerScript>().plant = place;
             flowerList.Add(flower);
-            flowersNum++;
             place = null;
-        }      
+        }
     }
-    private GameObject GetRundomFlower()
+    public GameObject GetRundomFlower()
     {
         GameObject n = null;
         foreach (GameObject i in flowerList)
@@ -173,12 +208,6 @@ public class FlowerS : MonoBehaviour
         }
         return n;
     }
-    //private int GetRundomFlower()
-    //{
-    //    int rundomNumOfFlower = Random.Range(0, flowerList.Count);
-    //    return rundomNumOfFlower;
-    //}
-
     public Quaternion RundomRotation()
     {
        yRotation =  Random.Range(80, 130);
@@ -192,6 +221,5 @@ public class FlowerS : MonoBehaviour
             Destroy(i);
         }
         flowerList.Clear();
-        flowersNum = 0;
     }
 }

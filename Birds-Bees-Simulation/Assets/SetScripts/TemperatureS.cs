@@ -6,11 +6,22 @@ using System.Runtime.InteropServices;
 public class TemperatureS : MonoBehaviour
 {
     [DllImport("__Internal")]
-    public static extern void TempValueSetWeb(int tempId, float value);  // globals.init function
+    public static extern void TempValueSetWeb(int tempId, int value);  // globals.init function
     [SerializeField] GameObject tempCanvas;
     public int id;
     public bool haveTemp;
     public bool tempCheck;
+
+    public class DataTemp
+    {
+       public int temperatureId;
+       public int tempValue;
+        public static DataTemp CreateFromJSON(string json)
+        {
+            DataTemp tempDataJ = JsonUtility.FromJson<DataTemp>(json);
+            return tempDataJ;
+        }
+    }
 
     private void Awake()
     {      
@@ -24,7 +35,7 @@ public class TemperatureS : MonoBehaviour
             SetTempCanavas();
         }      
     }
-    public void SetTemperatureVal(float value)
+    public void SetTemperatureVal(int value)
     {
         if (!Application.isEditor)
         {
@@ -33,14 +44,15 @@ public class TemperatureS : MonoBehaviour
     }
     public void CreateTemp(int id)
     {
-        this.id = id;
-        SetTempCanavas();    
+        this.id = id;    
+        SetTempCanavas();
     }
     public void SetTempCanavas()
-    {       
-        tempCanvas.SetActive(true);
-        FindObjectOfType<MonthChanager>().TempCanvas();
+    {
         haveTemp = true;
+        tempCanvas.SetActive(true);
+        FindObjectOfType<MonthChanager>().TempCanvas();       
+        FindObjectOfType<MonthChanager>().Invoke("SetTempOnStart", 1f);
     }
     public void ResetTempSimulation()
     {       

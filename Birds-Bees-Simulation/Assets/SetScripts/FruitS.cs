@@ -15,7 +15,7 @@ public class FruitS : MonoBehaviour
     [SerializeField] GameObject fruitPrifab;
     GameObject place;
     GameObject placeChangeToFree;
-    int fruitsNum;
+    //Inspector
     public bool isCheck;
     [SerializeField] int fruitCheck;
     public class FruitMData
@@ -48,32 +48,46 @@ public class FruitS : MonoBehaviour
     }
     public void InstantiateFruitCheck()
     {
-        FindFruitPosition();      
-        if (place == null && FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0  )
+        FindFruitPosition();
+        if (place == null && FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0)
         {
-            //int fruitN = GetRundomFruit();
-            //GameObject fruitDel = fruitList[fruitN];
-            GameObject fruitDel = GetRundomFruit();
-            if(fruitDel != null)
+            if(fruitList.Count > 7)
             {
-                GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
-                fruitList.Remove(fruitDel);
-                Destroy(fruitDel);
-                fruitsNum--;
+                GameObject fruitDel = GetRundomFruit();
+                if (fruitDel != null)
+                {
+                    GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
+                    fruitList.Remove(fruitDel);
+                    Destroy(fruitDel);
 
-                //new fruit
-                GameObject fruit = Instantiate(fruitPrifab, fruitDel.transform.position, fruitPrifab.transform.rotation);
-                fruit.GetComponent<FruitLogick>().plant = pl;
-                fruitList.Add(fruit);
-                fruitsNum++;
-            }           
+                    //new fruit
+                    GameObject fruit = Instantiate(fruitPrifab, fruitDel.transform.position, fruitPrifab.transform.rotation);
+                    fruit.GetComponent<FruitLogick>().plant = pl;
+                    fruitList.Add(fruit);
+                }
+            }          
+            else
+            {
+                //new
+                GameObject flowerToDel = FindObjectOfType<FlowerS>().GetRundomFlower();
+                if (flowerToDel != null)
+                {
+                    GameObject pl = flowerToDel.GetComponent<FlowerScript>().plant;
+                    int flowerId = flowerToDel.GetComponent<DataScript>().id;
+                    Destroy(flowerToDel);
+
+                    //new fruit
+                    GameObject fruitP = Instantiate(fruitPrifab, new Vector3(flowerToDel.transform.position.x, flowerToDel.transform.position.y - 3, flowerToDel.transform.position.z), fruitPrifab.transform.rotation);
+                    fruitP.GetComponent<FruitLogick>().plant = pl;
+                    fruitList.Add(fruitP);
+                }
+            }
         }
         if (place != null)
         {
             GameObject fruit = Instantiate(fruitPrifab, new Vector3(place.transform.position.x, place.transform.position.y - 3, place.transform.position.z), fruitPrifab.transform.rotation);
             fruit.GetComponent<FruitLogick>().plant = place; // to Set plant Free after destroy the fruit
             fruitList.Add(fruit);
-            fruitsNum++;
             place = null;
         }
         else { return; }
@@ -99,7 +113,6 @@ public class FruitS : MonoBehaviour
                     GameObject pl = i.GetComponent<FruitLogick>().plant;
                     pl.GetComponent<PlantPlace>().isFree = true;
                     FindObjectOfType<InternalFunc>().FreePlantPlace.Add(pl);
-                    fruitsNum--;
                     break;
                 }
             }
@@ -116,7 +129,6 @@ public class FruitS : MonoBehaviour
                 Destroy(i, 1f);                              
                 Invoke("SetPlaceFree", 3);
                 SetFruitsLevelSend(fruitId);
-                fruitsNum--;
                 break;
             }
         }
@@ -167,8 +179,7 @@ public class FruitS : MonoBehaviour
                     GameObject pl = FlowerPrifab.GetComponent<FlowerScript>().plant;
                     fruit.GetComponent<FruitLogick>().plant = pl;
                     // destroy Flower web and set list
-                    FindObjectOfType<FlowerS>().SetFlowersLevelSend(FlowerPrifab); 
-                    fruitsNum++;                    
+                    FindObjectOfType<FlowerS>().SetFlowersLevelSendObj(FlowerPrifab);                   
                     break;
                 }
             }
@@ -178,29 +189,47 @@ public class FruitS : MonoBehaviour
             FindFruitPosition();
             if (FindObjectOfType<InternalFunc>().FreePlantPlace.Count == 0 && place == null)
             {
-                //int fruitN = GetRundomFruit();
-                //GameObject fruitDel = fruitList[fruitN];
-                GameObject fruitDel = GetRundomFruit();
-                if (fruitDel != null)
-                {                    
-                    GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
-                    int fruitId = fruitDel.GetComponent<DataScript>().id;
-                    Destroy(fruitDel);
-                    fruitsNum--;
-                    if (!Application.isEditor)
+                if (fruitList.Count > 10)
+                {
+                    GameObject fruitDel = GetRundomFruit();
+                    if (fruitDel != null)
                     {
-                        //send to Plethora Delite fruit.
-                        SetFruitsLevelSend(fruitId);
+                        GameObject pl = fruitDel.GetComponent<FruitLogick>().plant;
+                        int fruitId = fruitDel.GetComponent<DataScript>().id;
+                        Destroy(fruitDel);
+                        if (!Application.isEditor)
+                        {
+                            //send to Plethora Delite fruit.
+                            SetFruitsLevelSend(fruitId);
+                        }
+                        //new fruit
+                        GameObject fruit = Instantiate(fruitPrifab, fruitDel.transform.position, fruitPrifab.transform.rotation);
+                        fruit.GetComponent<DataScript>().id = data.fruitId;
+                        fruit.GetComponent<FruitLogick>().plant = pl;
+                        fruitList.Add(fruit);
                     }
-                    //new fruit
-                    GameObject fruit = Instantiate(fruitPrifab, fruitDel.transform.position, fruitPrifab.transform.rotation);
-                    fruit.GetComponent<DataScript>().id = data.fruitId;
-                    fruit.GetComponent<FruitLogick>().plant = pl;
-                    fruit.GetComponent<FruitLogick>().ef.SetActive(true);
-                    fruitList.Add(fruit);
-                    fruitsNum++;
+                }                
+                else
+                {
+                    GameObject flowerToDel = FindObjectOfType<FlowerS>().GetRundomFlower();
+                    if (flowerToDel != null)
+                    {
+                        GameObject pl = flowerToDel.GetComponent<FlowerScript>().plant;
+                        int flowerId = flowerToDel.GetComponent<DataScript>().id;
+                        Destroy(flowerToDel);
+                        //flowersNum--;
+                        if (!Application.isEditor)
+                        {
+                            //send to Plethora Delite flower.
+                            FindObjectOfType<FlowerS>().SetFlowersLevelSendId(flowerId);
+                        }
+                        //new fruit
+                        GameObject fruitP = Instantiate(fruitPrifab, new Vector3(flowerToDel.transform.position.x, flowerToDel.transform.position.y - 3, flowerToDel.transform.position.z), fruitPrifab.transform.rotation);
+                        fruitP.GetComponent<DataScript>().id = data.fruitId;
+                        fruitP.GetComponent<FruitLogick>().plant = pl;
+                        fruitList.Add(fruitP);
+                    }                   
                 }
-                else { return; }
             }
             if(place != null)
             {
@@ -208,12 +237,11 @@ public class FruitS : MonoBehaviour
                 fruit.GetComponent<DataScript>().id = data.fruitId;
                 fruit.GetComponent<FruitLogick>().plant = place; // to Set plant Free after destroy the fruit
                 fruitList.Add(fruit);
-                fruitsNum++;
                 place = null;
             }
         }
     }
-    private GameObject GetRundomFruit()
+    public GameObject GetRundomFruit()
     {
         GameObject fruit = null;
         if (fruitList.Count != 0) 
@@ -230,11 +258,6 @@ public class FruitS : MonoBehaviour
         }
         return fruit;
     }
-    //private int GetRundomFruit()
-    //{
-    //    int rundomNumOfFruit = Random.Range(0, fruitList.Count);
-    //    return rundomNumOfFruit;
-    //}
     public void ResetFruitSimulation()
     {
         foreach (GameObject i in fruitList)
@@ -242,6 +265,5 @@ public class FruitS : MonoBehaviour
             Destroy(i);
         }
         fruitList.Clear();
-        fruitsNum = 0;
     }
 }

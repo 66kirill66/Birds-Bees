@@ -172,7 +172,7 @@ public class BeeS : MonoBehaviour
     {
         if(bee.GetComponent<DataScript>().beeState == "hibernate")
         {            
-            bee.GetComponent<BeeLogick>().BeeGoToHive();                  
+            bee.GetComponent<BeeLogick>().Invoke("BeeGoToHive",1);          // new         
         }
         else if (bee.GetComponent<DataScript>().beeState == "active")
         {           

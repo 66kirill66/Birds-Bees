@@ -32,7 +32,7 @@ public class BirdSliderPosition : MonoBehaviour
             totalTime += 1 * Time.deltaTime;
             if (totalTime > 1)
             {
-                slider.value -= 1;
+                slider.value -= 5;
                 int sliderV = Mathf.RoundToInt(slider.value);
                 FindObjectOfType<BirdS>().SetBirdEnergySendToWeb(birdId, sliderV);
                 totalTime = 0;

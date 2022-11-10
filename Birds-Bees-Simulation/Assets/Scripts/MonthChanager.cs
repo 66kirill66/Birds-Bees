@@ -34,6 +34,27 @@ public class MonthChanager : MonoBehaviour
     {
         currentMonth = month;
         monthPosition[month].gameObject.SetActive(true);
+
+        //Invoke("SetLightOnStart", 0.3f);
+       // Invoke("SetTempOnStart", 0.3f);
+    }
+    public void SetLightOnStart()
+    {
+        if (FindObjectOfType<LightDay>().havelight == true)
+        {
+            Text lightText = lightObjectsOne[month].GetComponentInChildren<Text>();
+            int lightValue = System.Convert.ToInt32(lightText.text);
+            FindObjectOfType<LightDay>().LightValueSet(lightValue);
+        }
+    }
+    public void SetTempOnStart()
+    {
+        if (FindObjectOfType<TemperatureS>().haveTemp == true)
+        {
+            Text t = tempObjects[month].GetComponentInChildren<Text>();
+            int tempValue = System.Convert.ToInt32(t.text);
+            FindObjectOfType<TemperatureS>().SetTemperatureVal(tempValue);
+        }
     }
     public void TempCanvas()
     {      
@@ -116,7 +137,7 @@ public class MonthChanager : MonoBehaviour
         if(isHot == false)
         {
             tempObjects[0].GetComponentInChildren<Text>().text = 4.ToString();
-            tempObjects[1].GetComponentInChildren<Text>().text = 5.5.ToString();
+            tempObjects[1].GetComponentInChildren<Text>().text = 6.ToString();
             tempObjects[2].GetComponentInChildren<Text>().text = 7.ToString();
             tempObjects[3].GetComponentInChildren<Text>().text = 16.ToString();
             tempObjects[4].GetComponentInChildren<Text>().text = 23.ToString();
@@ -125,7 +146,7 @@ public class MonthChanager : MonoBehaviour
             tempObjects[7].GetComponentInChildren<Text>().text = 27.ToString();
             tempObjects[8].GetComponentInChildren<Text>().text = 16.ToString();
             Text t = tempObjects[month].GetComponentInChildren<Text>();
-            float tempNum = float.Parse(t.text);
+            int tempNum = System.Convert.ToInt32(t.text);
             FindObjectOfType<TemperatureS>().SetTemperatureVal(tempNum);
             isHot = true;
         }
@@ -141,7 +162,7 @@ public class MonthChanager : MonoBehaviour
             tempObjects[7].GetComponentInChildren<Text>().text = 25.ToString();
             tempObjects[8].GetComponentInChildren<Text>().text = 15.ToString();
             Text t = tempObjects[month].GetComponentInChildren<Text>();
-            float tempNum = float.Parse(t.text);
+            int tempNum = System.Convert.ToInt32(t.text);
             FindObjectOfType<TemperatureS>().SetTemperatureVal(tempNum);
             isHot = false;
         }        
@@ -161,11 +182,11 @@ public class MonthChanager : MonoBehaviour
             }
             if(FindObjectOfType<TemperatureS>().haveTemp == true)
             {               
-                Text t = tempObjects[1].GetComponentInChildren<Text>();
-                float tempValueF = float.Parse(t.text);
                 //Text t = tempObjects[month].GetComponentInChildren<Text>();
-                //int tempValue = System.Convert.ToInt32(t.text);
-                FindObjectOfType<TemperatureS>().SetTemperatureVal(tempValueF);              
+                //float tempValueF = float.Parse(t.text);
+                Text t = tempObjects[month].GetComponentInChildren<Text>();
+                int tempValue = System.Convert.ToInt32(t.text);
+                FindObjectOfType<TemperatureS>().SetTemperatureVal(tempValue);               
             }
             if (FindObjectOfType<LightDay>().havelight == true && FindObjectOfType<TemperatureS>().haveTemp == false)
             {
@@ -176,8 +197,8 @@ public class MonthChanager : MonoBehaviour
             if (FindObjectOfType<LightDay>().havelight == true && FindObjectOfType<TemperatureS>().haveTemp == true)
             {
                 Text lightText = lightObjectsTo[month].GetComponentInChildren<Text>();
-                int lightValue = System.Convert.ToInt32(lightText.text);
-                FindObjectOfType<LightDay>().LightValueSet(lightValue);
+                int lightValue = System.Convert.ToInt32(lightText.text);     
+                FindObjectOfType<LightDay>().LightValueSet(lightValue);               
             }               
             currentMonth = month;
         }

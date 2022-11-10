@@ -151,7 +151,10 @@ public class BeeLogick : MonoBehaviour
             flowerPrifab = null;
             flowerToCome = null;
         }
-        FindObjectOfType<BeeS>().SetBeeListFlowerFly(gameObject);
+        if(GetComponent<DataScript>().beeState != "hibernate")
+        {
+            FindObjectOfType<BeeS>().SetBeeListFlowerFly(gameObject);
+        }      
     }
     private void CheckIfFlowerNotDelited()
     {
@@ -165,12 +168,15 @@ public class BeeLogick : MonoBehaviour
     }
     public void BeeBackToFly()
     {
-        isHaive = false;
-        isFlower = false;
-        StopAllCoroutines();    
-        fly = true;
-        anim.enabled = true;
-        StartCoroutine(FlyRange());
+        if (GetComponent<DataScript>().beeState != "hibernate")
+        {
+            isHaive = false;
+            isFlower = false;
+            StopAllCoroutines();
+            fly = true;
+            anim.enabled = true;
+            StartCoroutine(FlyRange());
+        }      
     }
     private void RundomPointToFly()
     {

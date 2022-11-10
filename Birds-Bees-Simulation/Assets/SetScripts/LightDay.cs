@@ -13,6 +13,7 @@ public class LightDay : MonoBehaviour
     [SerializeField] GameObject lightCanvasSecond;
     [SerializeField] GameObject lightCanvasLest;
 
+
     private void Awake()
     {
         lightCanvasLest.SetActive(false);
@@ -35,23 +36,26 @@ public class LightDay : MonoBehaviour
         }
     }
    
-    public void CreateLight(int lightId)
+    public void CreateLight(int id)
     {
-        id = lightId;
-        Invoke("SetLightCanavas", 0.1f);
+        this.id = id;
+        Invoke("SetLightCanavas", 0.3f);
     }
+   
     public void SetLightCanavas()
     {
         havelight = true;
         if (FindObjectOfType<TemperatureS>().haveTemp == true)
-        {
+        {         
             lightCanvasLest.SetActive(true);
             FindObjectOfType<MonthChanager>().LightCanvas();
+            FindObjectOfType<MonthChanager>().Invoke("SetLightOnStart",1f);
         }
-        if (FindObjectOfType<TemperatureS>().haveTemp == false)
+        else if (FindObjectOfType<TemperatureS>().haveTemp == false)
         {
             lightCanvasSecond.SetActive(true);
             FindObjectOfType<MonthChanager>().TempCanvas();
+            FindObjectOfType<MonthChanager>().Invoke("SetLightOnStart",1f);
         }       
     }
     public void ResetLightSimulation()

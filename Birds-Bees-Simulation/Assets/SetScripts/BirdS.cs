@@ -29,8 +29,8 @@ public class BirdS : MonoBehaviour
         public int value;
         public static BirdData CreateFromJSON(string json)
         {
-            BirdData birdSDataData = JsonUtility.FromJson<BirdData>(json);
-            return birdSDataData;
+            BirdData birdSDataJ = JsonUtility.FromJson<BirdData>(json);
+            return birdSDataJ;
         }
     }
     void Start()
