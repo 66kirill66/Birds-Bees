@@ -34,7 +34,7 @@ public class BeeSliderPosition : MonoBehaviour
             totalTime += 1 * Time.deltaTime;
             if (totalTime > 1)
             {
-                slider.value -= 5;
+                slider.value -= 2;
                 value = Mathf.RoundToInt(slider.value);
                 FindObjectOfType<BeeS>().SetBeeEnergySendToWeb(beeId, value);
                 totalTime = 0;
